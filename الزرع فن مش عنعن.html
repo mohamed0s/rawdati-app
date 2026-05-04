@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>روضتي Pro ✦ نظام العناية الذكي</title>
+<link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22Rawdati%20Pro%22%2C%22short_name%22%3A%22Rawdati%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23080f0b%22%2C%22theme_color%22%3A%22%2334d47a%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC%2BaJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABTSURBVGhD7cExAQAAAMKg9U9tCy8gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOA0vLwAB43bW5gAAAABJRU5ErkJggg%3D%3D%22%2C%22sizes%22%3A%2264x64%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════ */
+:root{
+  --bg:#080f0b; --bg2:#0d1810; --bg3:#111f15;
+  --card:#162318; --card2:#1c2e20; --card3:#213526;
+  --border:#243b28; --border2:#2e4d34;
+  --g1:#34d47a; --g2:#22a85e; --g3:#16774a;
+  --teal:#2dd4bf; --teal2:#0f9688;
+  --amber:#f59e0b; --amber2:#b45309;
+  --red:#f87171; --red2:#b91c1c;
+  --blue:#60a5fa; --purple:#a78bfa; --pink:#f472b6;
+  --ai:#7c3aed; --ai2:#6d28d9; --ai-glow:rgba(124,58,237,.25);
+  --text:#e2f0e8; --text2:#8ab49a; --text3:#4d7a5d;
+  --done:#0f2016; --done-t:#2a5e38;
+  --overlay:rgba(4,10,6,.9);
+  --r:20px; --r-sm:13px; --r-xs:9px;
+  --sh:0 8px 32px rgba(0,0,0,.6);
+  --sh-g:0 4px 20px rgba(52,212,122,.2);
+  --sh-ai:0 4px 24px rgba(124,58,237,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow-x:hidden;}
+body{
+  font-family:'Tajawal',sans-serif;
+  background:var(--bg); color:var(--text);
+  max-width:480px; margin:0 auto;
+  padding-bottom:92px; position:relative;
+}
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 85% 10%,rgba(52,212,122,.06) 0%,transparent 65%),
+    radial-gradient(ellipse 50% 40% at 15% 90%,rgba(45,212,191,.04) 0%,transparent 65%),
+    radial-gradient(ellipse 40% 30% at 50% 50%,rgba(124,58,237,.025) 0%,transparent 60%);
+}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:9px;}
+
+/* ─── HEADER ─── */
+.hdr{
+  position:sticky;top:0;z-index:80;
+  background:rgba(8,15,11,.97);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:13px 16px 10px;
+}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;}
+.brand{display:flex;align-items:center;gap:9px;}
+.brand-ico{
+  width:40px;height:40px;border-radius:13px;
+  background:linear-gradient(135deg,var(--g3),var(--g1));
+  display:flex;align-items:center;justify-content:center;
+  font-size:19px;box-shadow:var(--sh-g);flex-shrink:0;
+}
+.brand-name{font-family:'Cairo',sans-serif;font-size:21px;font-weight:900;color:var(--g1);letter-spacing:-.5px;}
+.brand-date{font-size:11px;color:var(--text3);font-weight:600;}
+.hdr-actions{display:flex;gap:7px;align-items:center;}
+.btn-add-plant{
+  display:flex;align-items:center;gap:6px;
+  padding:9px 14px;border-radius:var(--r-sm);border:none;
+  background:linear-gradient(135deg,var(--g3),var(--g2));
+  color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:800;
+  cursor:pointer;box-shadow:var(--sh-g);transition:transform .15s,box-shadow .15s;
+}
+.btn-add-plant:active{transform:scale(.96);box-shadow:none;}
+.btn-icon-sm{
+  width:36px;height:36px;border-radius:10px;border:1.5px solid var(--border2);
+  background:var(--card);color:var(--text2);font-size:16px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;
+}
+.btn-icon-sm:active{background:var(--card2);}
+.prog-wrap{background:var(--card);border-radius:var(--r-sm);padding:10px 13px;border:1px solid var(--border);}
+.prog-top{display:flex;justify-content:space-between;margin-bottom:7px;}
+.prog-lbl{font-size:12px;font-weight:700;color:var(--text3);}
+.prog-pct{font-size:15px;font-weight:900;color:var(--g1);}
+.prog-bar{height:7px;background:var(--bg3);border-radius:99px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--g3),var(--g1));border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1);box-shadow:0 0 8px rgba(52,212,122,.4);}
+
+/* ─── ALERTS ─── */
+.alerts-banner{margin:10px 14px 0;display:flex;flex-direction:column;gap:6px;}
+.alert-item{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(245,158,11,.1);border:1.5px solid rgba(245,158,11,.3);
+  border-radius:var(--r-sm);padding:10px 13px;
+  font-size:13px;font-weight:700;color:var(--amber);
+  animation:slideIn .3s ease;
+}
+.alert-item.urgent{background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.3);color:var(--red);}
+
+/* ─── TABS ─── */
+.tabs{
+  display:flex;gap:6px;padding:12px 14px;
+  position:sticky;top:116px;z-index:70;
+  background:rgba(8,15,11,.95);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+}
+.tab{
+  flex:1;padding:10px 4px;border:1.5px solid var(--border);border-radius:var(--r-sm);
+  background:var(--card);color:var(--text3);
+  font-family:'Tajawal',sans-serif;font-size:13px;font-weight:800;
+  cursor:pointer;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+}
+.tab .ti{font-size:17px;}
+.tab.on{
+  background:linear-gradient(135deg,var(--g3),var(--g2));
+  border-color:var(--g1);color:#fff;
+  box-shadow:0 4px 18px rgba(52,212,122,.25);transform:translateY(-1px);
+}
+.filter-row{display:flex;gap:7px;padding:0 14px 12px;overflow-x:auto;scrollbar-width:none;}
+.filter-row::-webkit-scrollbar{display:none;}
+.filt{
+  padding:7px 15px;border-radius:99px;border:1.5px solid var(--border);
+  background:transparent;color:var(--text2);
+  font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;
+}
+.filt.on{background:var(--g3);border-color:var(--g3);color:#fff;}
+.quick-bar{display:flex;gap:8px;padding:0 14px 12px;}
+.btn-all-done{
+  flex:1;padding:12px;border-radius:var(--r-sm);border:1.5px solid var(--g3);
+  background:rgba(22,119,74,.2);color:var(--g1);
+  font-family:'Tajawal',sans-serif;font-size:14px;font-weight:800;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;
+}
+.btn-all-done:active{background:rgba(22,119,74,.4);}
+
+/* ─── CONTENT / PANELS ─── */
+.content{padding:0 14px;position:relative;z-index:1;}
+.panel{display:none;}
+.panel.on{display:block;}
+
+/* ─── PLANT GROUP ─── */
+.plant-grp{margin-bottom:22px;}
+.plant-hdr{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 14px;margin-bottom:8px;
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);
+}
+.plant-emo{font-size:22px;line-height:1;}
+.plant-nm{font-size:16px;font-weight:800;color:var(--text);flex:1;}
+.plant-loc{font-size:11px;padding:3px 9px;border-radius:99px;font-weight:700;flex-shrink:0;}
+.loc-in{background:rgba(96,165,250,.15);color:var(--blue);}
+.loc-out{background:rgba(52,212,122,.12);color:var(--g1);}
+.health-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.h-good{background:var(--g1);box-shadow:0 0 6px rgba(52,212,122,.6);}
+.h-warn{background:var(--amber);box-shadow:0 0 6px rgba(245,158,11,.6);}
+.h-bad{background:var(--red);box-shadow:0 0 6px rgba(248,113,113,.6);}
+
+/* ─── TASK CARD ─── */
+.task-card{
+  background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:15px;margin-bottom:9px;position:relative;overflow:hidden;
+  animation:popIn .25s ease;
+}
+.task-card::before{
+  content:'';position:absolute;top:0;right:0;width:4px;height:100%;
+  background:linear-gradient(180deg,var(--g1),var(--teal));
+  border-radius:0 var(--r) var(--r) 0;
+}
+.task-card.done{background:var(--done);border-color:#1c3522;opacity:.65;}
+.task-card.done::before{background:var(--done-t);}
+.task-card.urgent-card{border-color:rgba(248,113,113,.4);}
+.task-card.urgent-card::before{background:linear-gradient(180deg,var(--red),var(--amber));}
+.tc-top{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}
+.tc-info{flex:1;}
+.tc-name{font-size:15px;font-weight:800;color:var(--text);margin-bottom:4px;line-height:1.4;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.tc-desc{font-size:12.5px;color:var(--text2);line-height:1.5;}
+.task-card.done .tc-name{color:var(--done-t);text-decoration:line-through;}
+.task-card.done .tc-desc{color:var(--done-t);}
+.tc-tag{font-size:11px;font-weight:800;padding:4px 10px;border-radius:99px;white-space:nowrap;flex-shrink:0;margin-top:1px;}
+.tg-w{background:rgba(45,212,191,.13);color:var(--teal);}
+.tg-f{background:rgba(245,158,11,.13);color:var(--amber);}
+.tg-t{background:rgba(52,212,122,.13);color:var(--g1);}
+.tg-c{background:rgba(167,139,250,.13);color:var(--purple);}
+.tg-m{background:rgba(248,113,113,.13);color:var(--red);}
+.tg-s{background:rgba(96,165,250,.13);color:var(--blue);}
+.tg-ai{background:rgba(124,58,237,.15);color:#a78bfa;}
+.tc-bottom{display:flex;gap:8px;}
+.btn-done{
+  flex:1;padding:12px;border:none;border-radius:var(--r-sm);
+  background:linear-gradient(135deg,var(--g3),var(--g2));
+  color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:800;
+  cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  box-shadow:0 4px 14px rgba(52,212,122,.2);
+}
+.btn-done:active{transform:scale(.97);box-shadow:none;}
+.btn-done.is-done{background:var(--done);color:var(--done-t);border:1.5px solid #1c3522;box-shadow:none;cursor:default;}
+.btn-photo{
+  width:44px;height:44px;border-radius:var(--r-sm);border:1.5px solid var(--border2);
+  background:var(--card2);color:var(--text2);font-size:18px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;
+}
+.btn-photo:active{background:var(--border);}
+
+/* ─── SEASON BANNER ─── */
+.season-banner{
+  background:var(--card2);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:15px;margin-bottom:14px;display:flex;align-items:center;gap:13px;
+}
+.sb-ico{font-size:38px;line-height:1;flex-shrink:0;}
+.sb-title{font-size:17px;font-weight:900;color:var(--g1);margin-bottom:3px;}
+.sb-sub{font-size:12.5px;color:var(--text2);}
+
+/* ─── PLANTS PAGE ─── */
+.plant-card-full{
+  background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);
+  margin-bottom:12px;overflow:hidden;
+}
+.pcf-top{padding:15px;display:flex;align-items:center;gap:12px;}
+.pcf-emoji{font-size:30px;}
+.pcf-info{flex:1;}
+.pcf-name{font-size:18px;font-weight:900;color:var(--text);margin-bottom:4px;}
+.pcf-meta{font-size:12px;color:var(--text2);line-height:1.6;}
+.source-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:11px;font-weight:800;padding:3px 9px;border-radius:99px;margin-top:4px;
+}
+.src-ai{background:rgba(124,58,237,.2);color:#a78bfa;border:1px solid rgba(124,58,237,.3);}
+.src-manual{background:rgba(52,212,122,.12);color:var(--g1);border:1px solid rgba(52,212,122,.2);}
+.src-fruiting{background:rgba(245,158,11,.13);color:var(--amber);border:1px solid rgba(245,158,11,.25);}
+.pcf-actions{display:flex;gap:8px;padding:0 15px 15px;flex-wrap:wrap;}
+.pcf-btn{
+  flex:1;min-width:calc(50% - 4px);padding:10px;border-radius:var(--r-sm);
+  border:1.5px solid var(--border2);background:transparent;color:var(--text2);
+  font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .2s;
+}
+.pcf-btn:active{background:var(--card2);}
+.pcf-btn.danger{border-color:rgba(248,113,113,.3);color:var(--red);}
+.health-bar-wrap{padding:0 15px 12px;}
+.health-label{font-size:11px;font-weight:700;color:var(--text3);margin-bottom:6px;}
+.health-bar{height:6px;background:var(--bg3);border-radius:99px;overflow:hidden;}
+.health-fill-g{height:100%;background:linear-gradient(90deg,var(--g3),var(--g1));border-radius:99px;}
+.health-fill-y{height:100%;background:linear-gradient(90deg,var(--amber2),var(--amber));border-radius:99px;}
+.health-fill-r{height:100%;background:linear-gradient(90deg,var(--red2),var(--red));border-radius:99px;}
+.gallery-section{padding:0 15px 15px;}
+.gallery-ttl{font-size:12px;font-weight:800;color:var(--text3);margin-bottom:8px;}
+.gallery-grid{display:flex;flex-wrap:wrap;gap:6px;}
+.gallery-img{width:72px;height:72px;object-fit:cover;border-radius:10px;border:1.5px solid var(--border2);cursor:pointer;}
+.gallery-add-btn{
+  width:72px;height:72px;border-radius:10px;border:2px dashed var(--border2);
+  background:transparent;color:var(--text3);font-size:22px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;
+}
+.gallery-add-btn:active{background:var(--card2);}
+input[type=file]{display:none;}
+
+/* ─── BACKUP PAGE ─── */
+.backup-section{padding:14px;}
+.backup-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:12px;}
+.backup-title{font-size:16px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.backup-desc{font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.5;}
+.btn-backup{
+  width:100%;padding:13px;border-radius:var(--r-sm);border:none;
+  font-family:'Tajawal',sans-serif;font-size:15px;font-weight:800;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;
+}
+.btn-exp{background:linear-gradient(135deg,var(--g3),var(--g2));color:#fff;box-shadow:var(--sh-g);}
+.btn-imp{background:var(--card2);border:1.5px solid var(--border2);color:var(--teal);}
+.btn-backup:active{transform:scale(.97);}
+
+/* ─── BOTTOM NAV ─── */
+.bnav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;z-index:200;
+  background:rgba(8,15,11,.97);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-top:1px solid var(--border);
+  padding:9px 8px 20px;display:flex;gap:4px;
+}
+.bnav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:7px 4px;border:none;background:transparent;cursor:pointer;border-radius:10px;transition:all .2s;
+}
+.bnav-btn .bi{font-size:19px;line-height:1;}
+.bnav-btn .bl{font-family:'Tajawal',sans-serif;font-size:11px;font-weight:800;color:var(--text3);}
+.bnav-btn.on .bl{color:var(--g1);}
+.bnav-btn.on .bi{filter:drop-shadow(0 0 5px rgba(52,212,122,.7));}
+
+/* ─── MODAL OVERLAY ─── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:300;
+  background:var(--overlay);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:none;align-items:flex-end;justify-content:center;
+}
+.modal-overlay.open{display:flex;}
+.modal-overlay.center{align-items:center;}
+.modal{
+  background:var(--bg2);border:1.5px solid var(--border2);
+  border-radius:28px 28px 0 0;
+  width:100%;max-width:480px;max-height:92vh;overflow-y:auto;
+  padding:22px 18px 36px;
+  animation:slideUp .3s cubic-bezier(.4,0,.2,1);
+}
+.modal-handle{width:44px;height:5px;background:var(--border2);border-radius:99px;margin:0 auto 18px;}
+.modal-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;}
+.modal-title{font-size:20px;font-weight:900;color:var(--text);}
+.modal-sub{font-size:13px;color:var(--text2);margin-top:3px;}
+.modal-close{
+  background:var(--card2);border:1.5px solid var(--border);border-radius:9px;
+  width:34px;height:34px;font-size:18px;cursor:pointer;color:var(--text2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.modal-close:active{background:var(--border);}
+
+/* Step dots */
+.steps{display:flex;align-items:center;gap:5px;margin-bottom:22px;}
+.step-dot{height:5px;flex:1;border-radius:99px;background:var(--border);transition:background .3s;}
+.step-dot.on{background:var(--g1);}
+.step-dot.ai-mode.on{background:var(--ai);}
+
+/* Form primitives */
+.form-lbl{font-size:13px;font-weight:800;color:var(--text2);margin-bottom:8px;display:block;}
+.form-input{
+  width:100%;padding:14px 15px;border-radius:var(--r-sm);
+  border:1.5px solid var(--border2);background:var(--card);
+  color:var(--text);font-family:'Tajawal',sans-serif;font-size:16px;
+  outline:none;transition:border-color .2s;
+}
+.form-input:focus{border-color:var(--g2);}
+.form-input::placeholder{color:var(--text3);}
+.form-textarea{
+  width:100%;padding:13px 14px;border-radius:var(--r-sm);
+  border:1.5px solid var(--border2);background:var(--card);
+  color:var(--text);font-family:'Tajawal',sans-serif;font-size:13px;line-height:1.6;
+  outline:none;resize:none;transition:border-color .2s;
+}
+.form-textarea:focus{border-color:var(--g2);}
+.form-textarea.ai-prompt-box{
+  background:var(--bg3);border-color:rgba(124,58,237,.4);color:var(--text2);
+  font-size:12px;line-height:1.7;min-height:160px;cursor:text;
+  font-family:monospace;direction:ltr;text-align:left;
+}
+.form-textarea.paste-box{min-height:110px;border-color:rgba(45,212,191,.3);}
+.form-textarea.paste-box:focus{border-color:var(--teal);}
+
+/* Chip grids */
+.chip-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;}
+.chip-grid.cols3{grid-template-columns:1fr 1fr 1fr;}
+.chip{
+  padding:12px 10px;border-radius:var(--r-sm);border:1.5px solid var(--border2);
+  background:var(--card);color:var(--text2);
+  font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;text-align:center;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+}
+.chip .chip-ico{font-size:22px;}
+.chip.sel{border-color:var(--g1);background:rgba(52,212,122,.12);color:var(--g1);}
+.chip.sel-ai{border-color:var(--ai);background:rgba(124,58,237,.12);color:#a78bfa;}
+.chip:active{transform:scale(.97);}
+.chip.yes-no{font-size:15px;font-weight:800;}
+
+/* Toggle */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.toggle-lbl{font-size:14px;font-weight:700;color:var(--text);}
+.toggle-wrap{display:flex;background:var(--card);border-radius:99px;border:1.5px solid var(--border2);overflow:hidden;}
+.toggle-opt{
+  padding:8px 16px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;
+  color:var(--text3);cursor:pointer;transition:all .2s;border:none;background:transparent;
+}
+.toggle-opt.sel{background:var(--g3);color:#fff;}
+
+/* Advanced */
+.adv-toggle{
+  display:flex;align-items:center;gap:8px;width:100%;
+  padding:11px 14px;border-radius:var(--r-sm);border:1.5px solid var(--border);
+  background:transparent;color:var(--text2);
+  font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;margin-bottom:10px;transition:all .2s;
+}
+.adv-toggle:active{background:var(--card);}
+.adv-body{display:none;background:var(--card);border-radius:var(--r-sm);padding:14px;margin-bottom:12px;border:1.5px solid var(--border);}
+.adv-body.open{display:block;}
+.adv-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:12px;}
+.adv-row:last-child{margin-bottom:0;}
+.adv-lbl{font-size:13px;font-weight:700;color:var(--text2);}
+.num-input{
+  width:80px;padding:9px 12px;border-radius:var(--r-xs);
+  border:1.5px solid var(--border2);background:var(--bg3);
+  color:var(--text);font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;
+  text-align:center;outline:none;
+}
+.num-input:focus{border-color:var(--g2);}
+
+/* Modal nav */
+.modal-nav{display:flex;gap:10px;margin-top:20px;}
+.btn-modal-prev{
+  padding:13px 20px;border-radius:var(--r-sm);border:1.5px solid var(--border2);
+  background:transparent;color:var(--text2);
+  font-family:'Tajawal',sans-serif;font-size:15px;font-weight:800;cursor:pointer;
+}
+.btn-modal-next{
+  flex:1;padding:13px;border-radius:var(--r-sm);border:none;
+  background:linear-gradient(135deg,var(--g3),var(--g2));color:#fff;
+  font-family:'Tajawal',sans-serif;font-size:16px;font-weight:900;cursor:pointer;
+  box-shadow:var(--sh-g);transition:all .2s;
+}
+.btn-modal-next:active{transform:scale(.97);}
+.btn-modal-next:disabled{background:var(--card2);border:1.5px solid var(--border);color:var(--text3);box-shadow:none;}
+.btn-modal-next.ai-btn{
+  background:linear-gradient(135deg,var(--ai2),var(--ai));
+  box-shadow:var(--sh-ai);
+}
+
+/* ─── CHOICE SCREEN ─── */
+.choice-screen{display:flex;flex-direction:column;gap:12px;margin-top:4px;}
+.choice-card{
+  padding:18px;border-radius:var(--r);border:1.5px solid var(--border2);
+  background:var(--card);cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;gap:14px;
+}
+.choice-card:active{transform:scale(.98);}
+.choice-card.manual:hover,.choice-card.manual:active{border-color:var(--g1);background:rgba(52,212,122,.07);}
+.choice-card.ai-pick:hover,.choice-card.ai-pick:active{border-color:var(--ai);background:rgba(124,58,237,.07);}
+.choice-ico{font-size:32px;line-height:1;flex-shrink:0;}
+.choice-info{}
+.choice-title{font-size:17px;font-weight:900;color:var(--text);margin-bottom:3px;}
+.choice-sub{font-size:13px;color:var(--text2);}
+.ai-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:11px;font-weight:800;padding:3px 9px;border-radius:99px;
+  background:linear-gradient(135deg,var(--ai2),var(--ai));color:#fff;margin-top:6px;
+}
+
+/* ─── AI PANEL ─── */
+.ai-panel{}
+.ai-section-title{
+  font-size:13px;font-weight:800;color:var(--text3);letter-spacing:1px;
+  margin-bottom:8px;display:flex;align-items:center;gap:6px;
+}
+.copy-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:11px 14px;border-radius:var(--r-sm);border:1.5px solid rgba(124,58,237,.4);
+  background:rgba(124,58,237,.12);color:#a78bfa;
+  font-family:'Tajawal',sans-serif;font-size:14px;font-weight:800;
+  cursor:pointer;width:100%;justify-content:center;margin:10px 0;transition:all .2s;
+}
+.copy-btn:active{background:rgba(124,58,237,.25);}
+.import-btn{
+  width:100%;padding:13px;border-radius:var(--r-sm);border:none;
+  background:linear-gradient(135deg,var(--teal2),var(--teal));color:#fff;
+  font-family:'Tajawal',sans-serif;font-size:16px;font-weight:900;cursor:pointer;
+  box-shadow:0 4px 18px rgba(45,212,191,.25);transition:all .2s;margin-top:10px;
+}
+.import-btn:active{transform:scale(.97);}
+.import-btn:disabled{background:var(--card2);color:var(--text3);box-shadow:none;}
+.ai-hint{
+  font-size:12px;color:var(--text3);text-align:center;margin-top:10px;line-height:1.5;
+}
+.ai-divider{
+  display:flex;align-items:center;gap:10px;margin:14px 0;
+}
+.ai-divider-line{flex:1;height:1px;background:var(--border);}
+.ai-divider-txt{font-size:12px;font-weight:700;color:var(--text3);}
+
+/* ─── CONFIRM ─── */
+.confirm-box{
+  background:var(--bg2);border:1.5px solid var(--border2);
+  border-radius:var(--r);padding:24px;width:90%;max-width:340px;
+  text-align:center;animation:popIn .25s ease;
+}
+.confirm-title{font-size:17px;font-weight:800;color:var(--text);margin-bottom:8px;}
+.confirm-sub{font-size:13px;color:var(--text2);margin-bottom:20px;}
+.confirm-actions{display:flex;gap:10px;}
+.btn-cancel{flex:1;padding:12px;border-radius:var(--r-sm);border:1.5px solid var(--border2);background:transparent;color:var(--text2);font-family:'Tajawal',sans-serif;font-size:15px;font-weight:800;cursor:pointer;}
+.btn-confirm-del{flex:1;padding:12px;border-radius:var(--r-sm);border:none;background:var(--red2);color:#fff;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:800;cursor:pointer;}
+
+/* ─── EMPTY / TOAST ─── */
+.empty{text-align:center;padding:50px 24px;color:var(--text3);}
+.empty-ico{font-size:52px;margin-bottom:10px;}
+.empty-ttl{font-size:18px;font-weight:800;margin-bottom:6px;}
+.empty-sub{font-size:13px;}
+.toast{
+  position:fixed;bottom:100px;left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--g3);color:#fff;
+  padding:12px 22px;border-radius:99px;
+  font-size:14px;font-weight:800;
+  box-shadow:var(--sh);opacity:0;transition:all .3s;
+  z-index:999;white-space:nowrap;pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.ai-toast{background:var(--ai);}
+
+/* ─── ANIMATIONS ─── */
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes slideIn{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes popIn{0%{transform:scale(.85);opacity:0}70%{transform:scale(1.03)}100%{transform:scale(1);opacity:1}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.pulsing{animation:pulse 1.5s ease-in-out infinite;}
+
+/* ─── CALENDAR ─── */
+.cal-section{padding:10px 14px 0;}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.cal-nav-btn{
+  width:36px;height:36px;border-radius:10px;border:1.5px solid var(--border2);
+  background:var(--card);color:var(--text2);font-size:16px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;
+}
+.cal-nav-btn:active{background:var(--card2);}
+.cal-month-lbl{font-size:18px;font-weight:900;color:var(--text);}
+.cal-today-btn{
+  padding:5px 14px;border-radius:99px;border:1.5px solid var(--g3);
+  background:transparent;color:var(--g1);font-family:'Tajawal',sans-serif;
+  font-size:12px;font-weight:800;cursor:pointer;margin-right:8px;
+}
+.cal-today-btn:active{background:rgba(52,212,122,.12);}
+.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px;}
+.cal-wd{text-align:center;font-size:11px;font-weight:800;color:var(--text3);padding:5px 0;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:8px;}
+.cal-cell{
+  height: 42px; border-radius:var(--r-xs);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  cursor:pointer;transition:all .15s;position:relative;
+  background:var(--card);border:1.5px solid transparent;
+  font-size:13px;font-weight:700;color:var(--text2);
+}
+.cal-cell:active{transform:scale(.95);}
+.cal-cell.today{border-color:var(--g1);color:var(--g1);font-weight:900;box-shadow:0 0 8px rgba(52,212,122,.15);}
+.cal-cell.selected{background:var(--g3);color:#fff;border-color:var(--g1);}
+.cal-cell.other{opacity:.25;cursor:default;}
+.cal-dots{display:flex;gap:2px;position:absolute;bottom:3px;}
+.cal-dot{width:4px;height:4px;border-radius:50%;}
+.cal-dot.d-urgent{background:var(--red);box-shadow:0 0 4px rgba(248,113,113,.5);}
+.cal-dot.d-medium{background:var(--amber);box-shadow:0 0 4px rgba(245,158,11,.4);}
+.cal-dot.d-seasonal{background:var(--teal);box-shadow:0 0 4px rgba(45,212,191,.4);}
+.cal-legend{display:flex;gap:14px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;}
+.cal-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--text3);}
+.cal-legend-dot{width:8px;height:8px;border-radius:50%;}
+.day-hdr{
+  font-size:15px;font-weight:900;color:var(--text);margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.day-hdr-date{color:var(--g1);}
+.task-card.prio-urgent::before{background:linear-gradient(180deg,var(--red),var(--amber));}
+.task-card.prio-medium::before{background:linear-gradient(180deg,var(--amber),var(--amber2));}
+.task-card.prio-seasonal::before{background:linear-gradient(180deg,var(--teal),var(--teal2));}
+.prio-pill{font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px;display:inline-flex;align-items:center;}
+.pp-u{background:rgba(248,113,113,.15);color:var(--red);}
+.pp-m{background:rgba(245,158,11,.13);color:var(--amber);}
+.pp-s{background:rgba(45,212,191,.13);color:var(--teal);}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="brand">
+      <div class="brand-ico">🌿</div>
+      <div>
+        <div class="brand-name">جنينة مولاي الملك 👑</div>
+        <div class="brand-date" id="dateBadge"></div>
+      </div>
+    </div>
+    <div class="hdr-actions">
+      <div class="btn-icon-sm" onclick="showPage('backup')" title="نسخ احتياطي">💾</div>
+      <button class="btn-add-plant" onclick="openModal()">➕ إضافة زرعة</button>
+    </div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-top">
+      <span class="prog-lbl">إنجاز اليوم</span>
+      <span class="prog-pct" id="weekPct">0%</span>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="weekBar" style="width:0%"></div></div>
+  </div>
+</div>
+
+<!-- ALERTS -->
+<div class="alerts-banner" id="alertsBanner"></div>
+
+<!-- CALENDAR -->
+<div class="cal-section" id="calSection">
+  <div class="cal-nav">
+    <button class="cal-nav-btn" onclick="calNav(1)">→</button>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span class="cal-month-lbl" id="calMonthLbl"></span>
+      <button class="cal-today-btn" onclick="calGoToday()">اليوم</button>
+    </div>
+    <button class="cal-nav-btn" onclick="calNav(-1)">←</button>
+  </div>
+  <div class="cal-legend">
+    <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--red);"></div>ضروري</div>
+    <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--amber);"></div>متوسط</div>
+    <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--teal);"></div>موسمي</div>
+  </div>
+  <div class="cal-weekdays">
+    <div class="cal-wd">سبت</div><div class="cal-wd">أحد</div><div class="cal-wd">اثنين</div>
+    <div class="cal-wd">ثلاثاء</div><div class="cal-wd">أربعاء</div><div class="cal-wd">خميس</div><div class="cal-wd">جمعة</div>
+  </div>
+  <div class="cal-grid" id="calGrid"></div>
+  <div style="padding:4px 0 8px;">
+    <button class="btn-all-done" onclick="markAllToday()">✔️ تم تنفيذ كل مهام اليوم</button>
+  </div>
+</div>
+
+<!-- PANELS -->
+<div class="content">
+  <div class="panel on" id="panel-home"><div id="dayDetail"></div></div>
+  <div class="panel" id="panel-plants"><div id="plants-list"></div></div>
+  <div class="panel" id="panel-backup">
+    <div class="backup-section">
+      <div class="backup-card">
+        <div class="backup-title">📤 تصدير البيانات</div>
+        <div class="backup-desc">احفظ كل نباتاتك ومهامك في ملف JSON على جهازك. الصور محفوظة منفصلاً في IndexedDB.</div>
+        <button class="btn-backup btn-exp" onclick="exportData()">📤 تصدير الآن</button>
+      </div>
+      <div class="backup-card">
+        <div class="backup-title">📥 استيراد البيانات</div>
+        <div class="backup-desc">استعد بياناتك من ملف JSON. سيتم استبدال البيانات الحالية.</div>
+        <button class="btn-backup btn-imp" onclick="document.getElementById('importFile').click()">📥 اختر ملف الاستيراد</button>
+        <input type="file" id="importFile" accept=".json" onchange="importData(event)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bnav">
+  <button class="bnav-btn on" id="bnav-home" onclick="showPage('home')"><span class="bi">🏠</span><span class="bl">الرئيسية</span></button>
+  <button class="bnav-btn" id="bnav-plants" onclick="showPage('plants')"><span class="bi">🌿</span><span class="bl">نباتاتي</span></button>
+  <button class="bnav-btn" id="bnav-backup" onclick="showPage('backup')"><span class="bi">💾</span><span class="bl">نسخ احتياطي</span></button>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ════════════════════════════════════════
+     ADD PLANT MODAL
+════════════════════════════════════════ -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-hdr">
+      <div>
+        <div class="modal-title" id="modalTitle">➕ إضافة زرعة جديدة</div>
+        <div class="modal-sub" id="modalSub">أخبرنا باسم الزرعة أولاً</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <!-- Step dots -->
+    <div class="steps" id="stepDots">
+      <div class="step-dot on" id="sd1"></div>
+      <div class="step-dot" id="sd2"></div>
+      <div class="step-dot" id="sd3"></div>
+      <div class="step-dot" id="sd4"></div>
+    </div>
+
+    <!-- ── STEP 1: Name ── -->
+    <div id="mstep1">
+      <label class="form-lbl">✏️ اسم الزرعة</label>
+      <input class="form-input" id="plantName" placeholder="مثال: عنب، ياسمين، طماطم…" oninput="onNameInput()">
+      <div class="modal-nav">
+        <button class="btn-modal-next" id="btnStep1Next" disabled onclick="goStep(2)">التالي ←</button>
+      </div>
+    </div>
+
+    <!-- ── STEP 2: Planting Type ── -->
+    <div id="mstep2" style="display:none;">
+      <label class="form-lbl">🌱 نوع الزراعة</label>
+      <div class="chip-grid" id="plantingTypeGrid">
+        <div class="chip" onclick="selChip(this,'plantingType','pot')"><span class="chip-ico">🪴</span>في أصيص</div>
+        <div class="chip" onclick="selChip(this,'plantingType','ground')"><span class="chip-ico">🌳</span>في الأرض</div>
+      </div>
+      <div class="modal-nav">
+        <button class="btn-modal-prev" onclick="goStep(1)">→ رجوع</button>
+        <button class="btn-modal-next" id="btnStep2Next" disabled onclick="goStep(3)">التالي ←</button>
+      </div>
+    </div>
+
+    <!-- ── STEP 3: Choice ── -->
+    <div id="mstep3" style="display:none;">
+      <div class="choice-screen">
+        <div class="choice-card manual" onclick="chooseManual()">
+          <div class="choice-ico">📋</div>
+          <div class="choice-info">
+            <div class="choice-title">إدخال يدوي</div>
+            <div class="choice-sub">اختر خصائص نبتتك من قوائم جاهزة</div>
+          </div>
+        </div>
+        <div class="choice-card ai-pick" onclick="chooseAI()">
+          <div class="choice-ico">🤖</div>
+          <div class="choice-info">
+            <div class="choice-title">توليد بواسطة AI</div>
+            <div class="choice-sub">انسخ بروميت، الصق رد الـ AI، وسيتم إنشاء كل شيء تلقائياً</div>
+            <div class="ai-badge">✨ موصى به</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-nav" style="margin-top:14px;">
+        <button class="btn-modal-prev" onclick="goStep(2)">→ رجوع</button>
+      </div>
+    </div>
+
+    <!-- ── STEP 4A: Manual ── -->
+    <div id="mstep4a" style="display:none;">
+      <label class="form-lbl">🌱 نوع النبات</label>
+      <div class="chip-grid" id="typeGrid">
+        <div class="chip" onclick="selChip(this,'type','aromatic')"><span class="chip-ico">🌸</span>عطرية</div>
+        <div class="chip" onclick="selChip(this,'type','leafy')"><span class="chip-ico">🌿</span>ورقية</div>
+        <div class="chip" onclick="selChip(this,'type','drought')"><span class="chip-ico">🌵</span>تتحمل الجفاف</div>
+        <div class="chip" onclick="selChip(this,'type','flowering')"><span class="chip-ico">🌼</span>مزهرة</div>
+        <div class="chip" onclick="selChip(this,'type','indoor')"><span class="chip-ico">🏠</span>داخلية</div>
+        <div class="chip" onclick="selChip(this,'type','fruiting')"><span class="chip-ico">🍇</span>مثمرة</div>
+      </div>
+      <label class="form-lbl">💪 مستوى العناية</label>
+      <div class="chip-grid cols3" id="careGrid">
+        <div class="chip" onclick="selChip(this,'care','easy')">سهل</div>
+        <div class="chip" onclick="selChip(this,'care','med')">متوسط</div>
+        <div class="chip" onclick="selChip(this,'care','high')">عالي</div>
+      </div>
+      <label class="form-lbl">☀️ الضوء</label>
+      <div class="chip-grid cols3" id="lightGrid">
+        <div class="chip" onclick="selChip(this,'light','full')">شمس مباشرة</div>
+        <div class="chip" onclick="selChip(this,'light','partial')">نصف ظل</div>
+        <div class="chip" onclick="selChip(this,'light','shade')">ظل</div>
+      </div>
+      <label class="form-lbl">💧 الري</label>
+      <div class="chip-grid cols3" id="waterGrid">
+        <div class="chip" onclick="selChip(this,'water','low')"><span style="font-size:11px">كل 5-7 أيام</span><br>قليل</div>
+        <div class="chip" onclick="selChip(this,'water','med')"><span style="font-size:11px">كل 2-3 أيام</span><br>متوسط</div>
+        <div class="chip" onclick="selChip(this,'water','high')"><span style="font-size:11px">يومي تقريباً</span><br>عالي</div>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-lbl">📍 مكان النبات</span>
+        <div class="toggle-wrap">
+          <button class="toggle-opt sel" id="togIn" onclick="setLoc('in')">داخل</button>
+          <button class="toggle-opt" id="togOut" onclick="setLoc('out')">خارج</button>
+        </div>
+      </div>
+
+      <!-- Fruiting Questions (shown when type=fruiting) -->
+      <div id="fruitingQs" style="display:none;">
+        <div style="background:rgba(245,158,11,.08);border:1.5px solid rgba(245,158,11,.2);border-radius:var(--r-sm);padding:14px;margin-bottom:16px;">
+          <div style="font-size:13px;font-weight:800;color:var(--amber);margin-bottom:12px;">🍇 أسئلة النباتات المثمرة</div>
+          <label class="form-lbl">هل تحتاج لتقليم؟</label>
+          <div class="chip-grid cols3" id="fq-prune" style="margin-bottom:12px;">
+            <div class="chip yes-no" onclick="selFQ(this,'pruning',true)">نعم</div>
+            <div class="chip yes-no" onclick="selFQ(this,'pruning',false)">لا</div>
+          </div>
+          <label class="form-lbl">هل هي متسلقة؟ (تحتاج دعامة)</label>
+          <div class="chip-grid cols3" id="fq-climber" style="margin-bottom:12px;">
+            <div class="chip yes-no" onclick="selFQ(this,'climber',true)">نعم</div>
+            <div class="chip yes-no" onclick="selFQ(this,'climber',false)">لا</div>
+          </div>
+          <label class="form-lbl">هل تحتاج كالسيوم عالي؟</label>
+          <div class="chip-grid cols3" id="fq-calcium">
+            <div class="chip yes-no" onclick="selFQ(this,'calcium',true)">نعم</div>
+            <div class="chip yes-no" onclick="selFQ(this,'calcium',false)">لا</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="adv-toggle" onclick="toggleAdv()">⚙️ إعدادات متقدمة <span id="advArrow">▼</span></button>
+      <div class="adv-body" id="advBody">
+        <div class="adv-row">
+          <span class="adv-lbl">💧 فترة الري (أيام)</span>
+          <input class="num-input" id="advWater" type="number" min="1" max="30" value="3">
+        </div>
+        <div class="adv-row">
+          <span class="adv-lbl">🌱 فترة التسميد (أيام)</span>
+          <input class="num-input" id="advFert" type="number" min="7" max="90" value="30">
+        </div>
+      </div>
+      <div class="modal-nav">
+        <button class="btn-modal-prev" onclick="goStep(3)">→ رجوع</button>
+        <button class="btn-modal-next" id="btnManualCreate" disabled onclick="createPlantManual()">🌱 إنشاء النظام</button>
+      </div>
+    </div>
+
+    <!-- ── STEP 4B: AI Flow ── -->
+    <div id="mstep4b" style="display:none;">
+      <div class="ai-panel">
+        <div class="ai-section-title">📋 بروميت لنسخه</div>
+        <div class="form-textarea ai-prompt-box" id="aiPromptBox" readonly></div>
+        <button class="copy-btn" onclick="copyPrompt()">📋 نسخ البروميت</button>
+
+        <div class="ai-divider">
+          <div class="ai-divider-line"></div>
+          <div class="ai-divider-txt">ثم الصق رد الـ AI هنا</div>
+          <div class="ai-divider-line"></div>
+        </div>
+
+        <div class="ai-section-title">📥 الصق JSON هنا</div>
+        <textarea class="form-textarea paste-box" id="aiJsonPaste" placeholder='{ "waterDays": 3, "fertDays": 30, ... }' oninput="onJsonPaste()"></textarea>
+
+        <div id="jsonStatus" style="font-size:12px;margin-top:6px;min-height:18px;"></div>
+
+        <button class="import-btn" id="btnAiImport" disabled onclick="createPlantFromAI()">✨ استيراد وإنشاء الزرعة</button>
+        <div class="ai-hint">اذهب إلى ChatGPT أو Claude، الصق البروميت، انسخ الرد، وارجع هنا</div>
+      </div>
+      <div class="modal-nav" style="margin-top:14px;">
+        <button class="btn-modal-prev" onclick="goStep(3)">→ رجوع</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CONFIRM DELETE MODAL -->
+<div class="modal-overlay center" id="confirmModal">
+  <div class="confirm-box">
+    <div class="confirm-title">🗑️ حذف الزرعة؟</div>
+    <div class="confirm-sub">سيتم حذف الزرعة وكل مهامها وصورها. لا يمكن التراجع.</div>
+    <div class="confirm-actions">
+      <button class="btn-cancel" onclick="closeConfirm()">إلغاء</button>
+      <button class="btn-confirm-del" id="confirmDelBtn">حذف</button>
+    </div>
+  </div>
+</div>
+
+<!-- TASKS MANAGER MODAL -->
+<div class="modal-overlay center" id="tasksManagerModal">
+  <div class="modal-box" style="width: 500px; max-width: 95vw; padding: 20px; display: flex; flex-direction: column; max-height: 90vh;">
+    <div class="modal-hdr" style="margin-bottom: 15px;">
+      <h3 style="margin:0;font-weight:900;" id="tmTitle">⚙️ إدارة المهام</h3>
+      <button class="btn-close" onclick="closeTasksManager()">✕</button>
+    </div>
+    
+    <div id="tmList" style="flex: 1; overflow-y: auto; margin-bottom: 20px; border-bottom: 1px solid var(--bg3); padding-bottom: 10px;">
+      <!-- Tasks will be listed here -->
+    </div>
+
+    <div id="tmForm" style="background: var(--bg2); padding: 15px; border-radius: 12px; border: 1px solid var(--bg3);">
+      <div style="font-weight:800; margin-bottom:10px; font-size:14px;" id="tmFormTitle">✨ إضافة مهمة جديدة</div>
+      <input type="hidden" id="tmTaskId" value="">
+      <input type="text" id="tmName" class="form-input" placeholder="اسم المهمة (مثال: تنظيف الأوراق)" style="margin-bottom:8px;">
+      <input type="text" id="tmDesc" class="form-input" placeholder="وصف قصير للمهمة" style="margin-bottom:12px;">
+      
+      <div style="display:flex; gap:10px; margin-bottom:12px;">
+        <div style="flex:1;">
+          <label style="font-size:12px; color:var(--text3); margin-bottom:4px; display:block;">النوع</label>
+          <select id="tmTag" class="form-input" style="padding:8px;">
+            <option value="water">💧 ري</option>
+            <option value="fert">🌱 تسميد</option>
+            <option value="trim">✂️ تقليم</option>
+            <option value="check" selected>🔍 فحص</option>
+            <option value="clean">🧹 نظافة</option>
+            <option value="season">🌦️ موسمي</option>
+          </select>
+        </div>
+        <div style="flex:1;">
+          <label style="font-size:12px; color:var(--text3); margin-bottom:4px; display:block;">التكرار (كل كم يوم)</label>
+          <input type="number" id="tmRepeat" class="form-input" min="1" max="365" value="7" style="padding:8px;">
+        </div>
+      </div>
+      
+      <div style="margin-bottom:12px;">
+        <label style="font-size:12px; color:var(--text3); margin-bottom:4px; display:block;">📅 تاريخ بداية الدورة</label>
+        <input type="date" id="tmStartDate" class="form-input" style="padding:8px;">
+      </div>
+      
+      <div style="display:flex; gap:10px;">
+        <button class="btn-confirm-del" style="background:var(--g1);flex:1;" id="tmSaveBtn" onclick="saveTmTask()">💾 حفظ المهمة</button>
+        <button class="btn-cancel" style="display:none;flex:1;" id="tmCancelBtn" onclick="resetTmForm()">إلغاء التعديل</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHOTO INPUT -->
+<input type="file" id="photoInput" accept="image/*" onchange="handlePhotoUpload(event)">
+
+<script>
+'use strict';
+/* ═══════════════════════════════════════════
+   CONSTANTS
+═══════════════════════════════════════════ */
+const STORAGE_KEY = 'rawdati_v6';
+const IDB_NAME = 'RawdatiPhotos';
+const IDB_STORE = 'photos';
+const MONTH_NAMES = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+const DAY_NAMES   = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const TAG_LABELS  = {water:'💧 ري',fert:'🌱 تسميد',trim:'✂️ تقليم',check:'🔍 فحص',move:'🏠 نقل',clean:'🧹 نظافة',iron:'🔩 حديد',season:'🌦️ موسمي',support:'🪢 دعامة',calcium:'💊 كالسيوم'};
+const TAG_CLS     = {water:'tg-w',fert:'tg-f',trim:'tg-t',check:'tg-c',move:'tg-m',clean:'tg-s',iron:'tg-c',season:'tg-s',support:'tg-ai',calcium:'tg-f'};
+const WATER_DAYS  = {low:6,med:3,high:1};
+const EMOJIS      = {aromatic:'🌸',leafy:'🌿',drought:'🌵',flowering:'🌼',indoor:'🏠',fruiting:'🍇',system:'⚙️'};
+
+function getSeason(){
+  const m = new Date().getMonth()+1;
+  if(m>=3&&m<=5) return 'spring';
+  if(m>=6&&m<=8) return 'summer';
+  if(m>=9&&m<=11) return 'autumn';
+  return 'winter';
+}
+const SEASON_META = {
+  spring:{label:'الربيع 🌸',icon:'🌱',sub:'موسم النمو — ابدأ التسميد وشجّع النباتات'},
+  summer:{label:'الصيف ☀️',icon:'☀️',sub:'الحر شديد — زِد الري وراقب الجفاف'},
+  autumn:{label:'الخريف 🍂',icon:'🍂',sub:'موسم التهدئة — قلّل التسميد تدريجياً'},
+  winter:{label:'الشتاء ❄️',icon:'❄️',sub:'موسم الراحة — قلّل الري وأدخل النباتات الحساسة'},
+};
+const season = getSeason();
+const today  = (() => { const d=new Date(); d.setHours(0,0,0,0); return d; })();
+
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function daysBetween(d1,d2){ return Math.round((new Date(d2)-new Date(d1))/(864e5)); }
+
+/* ═══════════════════════════════════════════
+   INDEXEDDB — PHOTOS
+═══════════════════════════════════════════ */
+let db = null;
+
+function openIDB(){
+  return new Promise((res,rej)=>{
+    const req = indexedDB.open(IDB_NAME,1);
+    req.onupgradeneeded = e => e.target.result.createObjectStore(IDB_STORE, {keyPath:'plantId'});
+    req.onsuccess = e => { db=e.target.result; res(db); };
+    req.onerror   = () => rej(req.error);
+  });
+}
+
+function idbGetPhotos(plantId){
+  return new Promise(res=>{
+    if(!db){ res([]); return; }
+    const tx  = db.transaction(IDB_STORE,'readonly');
+    const req = tx.objectStore(IDB_STORE).get(plantId);
+    req.onsuccess = () => res(req.result ? req.result.photos : []);
+    req.onerror   = () => res([]);
+  });
+}
+
+function idbSetPhotos(plantId, photos){
+  return new Promise(res=>{
+    if(!db){ res(); return; }
+    const tx  = db.transaction(IDB_STORE,'readwrite');
+    tx.objectStore(IDB_STORE).put({plantId, photos});
+    tx.oncomplete = () => res();
+    tx.onerror    = () => res();
+  });
+}
+
+function idbDeletePhotos(plantId){
+  return new Promise(res=>{
+    if(!db){ res(); return; }
+    const tx = db.transaction(IDB_STORE,'readwrite');
+    tx.objectStore(IDB_STORE).delete(plantId);
+    tx.oncomplete = () => res();
+    tx.onerror    = () => res();
+  });
+}
+
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+let state = { plants:[], tasks:[], completion:{} };
+
+function loadState(){
+  try{ const s=localStorage.getItem(STORAGE_KEY); if(s) state=JSON.parse(s); } catch(e){}
+  
+  // Cleanup previously saved system tasks
+  state.plants = state.plants.filter(p => p.id !== '__system__' && p.type !== 'system');
+  state.tasks = state.tasks.filter(t => t.plantId !== '__system__');
+
+  // Fix incorrect repeatDays from old AI imports 
+  // Old code used t.repeat directly as days instead of multiplying by period
+  state.plants.forEach(plant => {
+    if(!plant.aiTasks || !plant.aiTasks.length) return;
+    plant.aiTasks.forEach(ai => {
+      const match = state.tasks.find(t => t.plantId === plant.id && t.name === ai.name);
+      if(!match) return;
+      let correctDays = ai.repeat || 7;
+      if(ai.period === 'week')   correctDays = (ai.repeat || 1) * 7;
+      if(ai.period === 'month')  correctDays = (ai.repeat || 1) * 30;
+      if(ai.period === 'season') correctDays = (ai.repeat || 1) * 90;
+      if(match.repeatDays !== correctDays){
+        match.repeatDays = correctDays;
+      }
+    });
+  });
+}
+function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+function dateKey(d){ const x=d||new Date(); return `${x.getFullYear()}-${x.getMonth()+1}-${x.getDate()}`; }
+/* Cycle-based completion: done for the whole cycle, not just one day */
+function cycleKey(taskId, cycleStart){ return `${taskId}::${dateKey(cycleStart)}`; }
+function getCycleDue(task, date){
+  if(!task.repeatDays) return null;
+  const c = new Date(task.createdAt); c.setHours(0,0,0,0);
+  const d = new Date(date); d.setHours(0,0,0,0);
+  const diff = Math.round((d - c) / 864e5);
+  if(diff < 0) return null;
+  const cycleNum = Math.floor(diff / task.repeatDays);
+  const dueDate = new Date(c); dueDate.setDate(dueDate.getDate() + cycleNum * task.repeatDays);
+  return dueDate;
+}
+function getTaskWindow(task){
+  if(task.repeatDays <= 7) return 0;          // urgent: exact day only
+  if(task.repeatDays <= 50) return Math.max(1, Math.floor(task.repeatDays * 0.3)); // medium: ~30%
+  return Math.floor(task.repeatDays * 0.5);   // seasonal: 50%
+}
+function isDone(id, date){
+  /* Check if completed for this cycle */
+  const task = state.tasks.find(t=>t.id===id);
+  if(!task) return false;
+  const due = getCycleDue(task, date);
+  if(!due) return false;
+  return !!state.completion[cycleKey(id, due)];
+}
+function markDone(id){
+  const task = state.tasks.find(t=>t.id===id);
+  if(!task) return;
+  const due = getCycleDue(task, selectedDate);
+  if(!due) return;
+  state.completion[cycleKey(id, due)]={ts:Date.now()};
+  saveState(); render(); updateProgress();
+  showToast('✅ تم التسجيل!');
+}
+function markAllToday(){
+  const tasks = getTasksForDate(today);
+  let n=0;
+  tasks.forEach(t=>{
+    if(!isDone(t.id,today)){
+      const due = getCycleDue(t, today);
+      if(due){ state.completion[cycleKey(t.id,due)]={ts:Date.now()}; n++; }
+    }
+  });
+  saveState(); render(); updateProgress();
+  showToast(`✔️ تم إنجاز ${n} مهمة!`);
+}
+
+/* ═══════════════════════════════════════════
+   TASK PRIORITY & SCHEDULING
+═══════════════════════════════════════════ */
+function taskPriority(t){
+  if(t.period==='season' || t.repeatDays > 50) return 'seasonal';
+  if(t.repeatDays <= 7) return 'urgent';
+  return 'medium';
+}
+const PRIO_LABEL = {urgent:'ضروري',medium:'متوسط',seasonal:'موسمي'};
+const PRIO_CLS   = {urgent:'pp-u',medium:'pp-m',seasonal:'pp-s'};
+
+function isTaskDueOn(task, date){
+  if(!task.repeatDays) return false;
+  const c = new Date(task.createdAt); c.setHours(0,0,0,0);
+  const d = new Date(date); d.setHours(0,0,0,0);
+  const diff = Math.round((d - c) / 864e5);
+  if(diff < 0) return false;
+  const window = getTaskWindow(task);
+  const cycleNum = Math.floor(diff / task.repeatDays);
+  const dueDate = new Date(c); dueDate.setDate(dueDate.getDate() + cycleNum * task.repeatDays);
+  const daysSinceDue = Math.round((d - dueDate) / 864e5);
+  
+  if(daysSinceDue >= 0 && daysSinceDue <= window){
+    // If it's done, only show it on the EXACT due date as "Done". Hide it from the remaining window days.
+    if(daysSinceDue > 0 && isDone(task.id, date)) return false;
+    return true;
+  }
+  return false;
+}
+
+function getTasksForDate(date){
+  return state.tasks.filter(t => isTaskDueOn(t, date));
+}
+
+function getOverdueTasks(date){
+  const d = new Date(date); d.setHours(0,0,0,0);
+  const result = [];
+  state.tasks.forEach(t => {
+    if(!t.repeatDays) return;
+    const c = new Date(t.createdAt); c.setHours(0,0,0,0);
+    const diff = Math.round((d - c) / 864e5);
+    if(diff <= 0) return;
+    const window = getTaskWindow(t);
+    const cycleNum = Math.floor(diff / t.repeatDays);
+    /* Check previous cycle — was it completed? */
+    if(cycleNum < 1) return;
+    const prevDue = new Date(c); prevDue.setDate(prevDue.getDate() + (cycleNum - 1) * t.repeatDays);
+    const prevDeadline = new Date(prevDue); prevDeadline.setDate(prevDeadline.getDate() + window);
+    if(prevDeadline < d && !state.completion[cycleKey(t.id, prevDue)]){
+      result.push({...t, _overdue:true, _dueDate:new Date(prevDue)});
+    }
+  });
+  return result;
+}
+
+/* ═══════════════════════════════════════════
+   HEALTH
+═══════════════════════════════════════════ */
+function getHealth(plantId){
+  const tasks = state.tasks.filter(t=>t.plantId===plantId);
+  if(!tasks.length) return {status:'good',pct:100};
+  const todayTasks = tasks.filter(t=>isTaskDueOn(t, today));
+  if(!todayTasks.length) return {status:'good',pct:100};
+  const done = todayTasks.filter(t=>isDone(t.id, today)).length;
+  const pct  = Math.round((done/todayTasks.length)*100);
+  return {status: pct>=70?'good':pct>=40?'warn':'bad', pct};
+}
+const HEALTH_LABEL = {good:'🟢 ممتاز',warn:'🟡 يحتاج متابعة',bad:'🔴 متأخر'};
+
+/* ═══════════════════════════════════════════
+   GENERATE TASKS — GENERIC
+═══════════════════════════════════════════ */
+function generateTasks(plant){
+  const wd  = plant.waterDays || 3;
+  const pWd = plant.plantingType === 'ground' ? wd + 2 : wd;
+  const fd  = plant.fertDays  || 30;
+  const wFinal = plant.location==='in' ? Math.min(pWd+1,14) : pWd;
+
+  const tasks = [
+    {name:'ري '+plant.name,    desc:`تحقق من التربة واسقِ. الهدف: كل ${wFinal} أيام.`,    tag:'water', period:'week',  repeatDays:wFinal},
+    {name:'تسميد '+plant.name, desc:`أضف سماداً متوازناً كل ${fd} يوم.`,                  tag:'fert',  period:'month', repeatDays:fd},
+    {name:'فحص '+plant.name,   desc:'تفقّد الأوراق والتربة والجذور.',                       tag:'check', period:'week',  repeatDays:7},
+    {name:'تقليم '+plant.name, desc:'أزل الأوراق والأفرع الجافة أو المريضة.',              tag:'trim',  period:'month', repeatDays:21},
+  ];
+
+  // ── Generic fruiting logic ──
+  if(plant.isFruiting || plant.type==='fruiting'){
+    if(plant.fruitingFlags?.pruning !== false){
+      tasks.push({name:'تقليم إنتاجي — '+plant.name, desc:'قصّ الأفرع القديمة لتحفيز الإنتاج الموسمي.', tag:'trim', period:'month', repeatDays:28});
+    }
+    if(plant.fruitingFlags?.climber){
+      tasks.push({name:'فحص الدعامات — '+plant.name, desc:'تحقق من أن الدعامات والأسلاك تحمل وزن النبات بشكل صحيح.', tag:'support', period:'week', repeatDays:7});
+    }
+    if(plant.fruitingFlags?.calcium){
+      tasks.push({name:'إضافة كالسيوم — '+plant.name, desc:'أضف سماداً غنياً بالكالسيوم لمنع تعفن القمة وتحسين الإنتاج.', tag:'calcium', period:'month', repeatDays:21});
+    }
+    if(plant.plantingType === 'ground'){
+      tasks.push({name:'تسميد عضوي شتوي — '+plant.name, desc:'أضف سماد عضوي متحلل في الشتاء.', tag:'fert', period:'season', repeatDays:90});
+    } else if(plant.plantingType === 'pot'){
+      tasks.push({name:'تفقد ثقوب الصرف — '+plant.name, desc:'تأكد من عدم انسداد ثقوب الصرف في الأصيص.', tag:'check', period:'month', repeatDays:30});
+    }
+  }
+
+  // ── Seasonal task ──
+  const seasonDescs = {
+    spring:`ابدأ التسميد المكثف وشجّع نمو ${plant.name} في الربيع.`,
+    summer:`زِد ري ${plant.name} بسبب الحر الشديد في الصيف.`,
+    autumn:`قلّل تسميد ${plant.name} تدريجياً مع دخول الخريف.`,
+    winter:`قلّل ري ${plant.name} وأدخله للداخل عند البرد.`,
+  };
+  tasks.push({name:'مهمة الموسم — '+plant.name, desc:seasonDescs[season], tag:'season', period:'season', repeatDays:90});
+
+  if(plant.plantingType === 'pot' || (!plant.plantingType && plant.location==='in')){
+    tasks.push({name:'تدوير وعاء '+plant.name, desc:'دوّر الوعاء ربع دورة للحصول على ضوء متوازن من كل الجهات.', tag:'check', period:'week', repeatDays:7});
+  }
+  if(plant.plantingType === 'ground'){
+    tasks.push({name:'عزق التربة وتنظيف الحشائش الضارة — '+plant.name, desc:'عزق التربة برفق حول النبات وإزالة الحشائش.', tag:'clean', period:'month', repeatDays:20});
+  }
+
+  // ── AI-imported extra tasks ──
+  if(plant.aiTasks && plant.aiTasks.length){
+    plant.aiTasks.forEach(t=>{
+      let rd = t.repeat || 7;
+      if(t.period === 'week') rd = (t.repeat || 1) * 7;
+      if(t.period === 'month') rd = (t.repeat || 1) * 30;
+      if(t.period === 'season') rd = (t.repeat || 1) * 90;
+      tasks.push({name:t.name, desc:t.desc, tag:'check', period:t.period||'week', repeatDays:rd});
+    });
+  }
+
+function alignCreatedAt(tag, repeatDays){
+  if(!repeatDays) return Date.now();
+  const existing = state.tasks.find(t => t.tag === tag && t.repeatDays === repeatDays);
+  if(!existing) return Date.now();
+
+  const c = new Date(existing.createdAt); c.setHours(0,0,0,0);
+  const todayStart = new Date(today); todayStart.setHours(0,0,0,0);
+  const diff = Math.round((todayStart - c) / 864e5);
+  
+  if(diff < 0) return existing.createdAt; 
+  
+  const cycleNum = Math.floor(diff / repeatDays);
+  const currentCycleStart = new Date(c); currentCycleStart.setDate(currentCycleStart.getDate() + cycleNum * repeatDays);
+  
+  return currentCycleStart.getTime();
+}
+
+  return tasks.map(t=>({
+    ...t, 
+    id:uid(), 
+    plantId:plant.id, 
+    createdAt: alignCreatedAt(t.tag, t.repeatDays)
+  }));
+}
+
+/* ═══════════════════════════════════════════
+   ALERTS
+═══════════════════════════════════════════ */
+function buildAlerts(){
+  const el = document.getElementById('alertsBanner');
+  const alerts = [];
+  const overdue = getOverdueTasks(today);
+  overdue.slice(0,3).forEach(t=>{
+    alerts.push({type:'urgent', msg:`🔴 متأخر: ${t.name}`});
+  });
+  // Tasks due tomorrow
+  const tom = new Date(today); tom.setDate(tom.getDate()+1);
+  getTasksForDate(tom).slice(0,2).forEach(t=>{
+    alerts.push({type:'warn', msg:`⚠️ غداً: ${t.name}`});
+  });
+  el.innerHTML = alerts.slice(0,3).map(a=>`<div class="alert-item ${a.type==='urgent'?'urgent':''}">${a.msg}</div>`).join('');
+}
+
+/* ═══════════════════════════════════════════
+   RENDERING — CALENDAR
+═══════════════════════════════════════════ */
+let currentPage  = 'home';
+let viewYear  = today.getFullYear();
+let viewMonth = today.getMonth();
+let selectedDate = new Date(today);
+
+function render(){
+  buildAlerts();
+  if(currentPage==='home'){ renderCalendar(); renderDayDetail(); }
+  if(currentPage==='plants') renderPlantsPage();
+}
+
+function renderCalendar(){
+  document.getElementById('calMonthLbl').textContent = `${MONTH_NAMES[viewMonth]} ${viewYear}`;
+  const first = new Date(viewYear, viewMonth, 1);
+  const lastDay = new Date(viewYear, viewMonth+1, 0).getDate();
+  const prevLastDay = new Date(viewYear, viewMonth, 0).getDate();
+  const startCol = (first.getDay()+1) % 7;
+  let html = '';
+  for(let i=0;i<startCol;i++){
+    const d = prevLastDay - startCol + i + 1;
+    html += `<div class="cal-cell other">${d}</div>`;
+  }
+  for(let d=1;d<=lastDay;d++){
+    const dt = new Date(viewYear, viewMonth, d);
+    const isToday = dt.getTime()===today.getTime();
+    const isSel = dt.getTime()===selectedDate.getTime();
+    const tasks = getTasksForDate(dt);
+    const hasPrio = {urgent:false,medium:false,seasonal:false};
+    tasks.forEach(t=>{ hasPrio[taskPriority(t)]=true; });
+    let dots = '';
+    if(hasPrio.urgent||hasPrio.medium||hasPrio.seasonal){
+      dots = '<div class="cal-dots">';
+      if(hasPrio.urgent)  dots += '<div class="cal-dot d-urgent"></div>';
+      if(hasPrio.medium)  dots += '<div class="cal-dot d-medium"></div>';
+      if(hasPrio.seasonal)dots += '<div class="cal-dot d-seasonal"></div>';
+      dots += '</div>';
+    }
+    html += `<div class="cal-cell${isToday?' today':''}${isSel?' selected':''}" onclick="selectDay(${viewYear},${viewMonth},${d})">${d}${dots}</div>`;
+  }
+  const totalCells = startCol + lastDay;
+  const rem = totalCells % 7;
+  if(rem > 0){
+    for(let i=1;i<=(7 - rem);i++) html += `<div class="cal-cell other">${i}</div>`;
+  }
+  document.getElementById('calGrid').innerHTML = html;
+}
+
+function calNav(dir){
+  viewMonth -= dir;
+  if(viewMonth<0){viewMonth=11;viewYear--;}
+  if(viewMonth>11){viewMonth=0;viewYear++;}
+  renderCalendar();
+}
+function calGoToday(){
+  viewYear=today.getFullYear(); viewMonth=today.getMonth();
+  selectedDate=new Date(today);
+  render(); updateProgress();
+}
+function selectDay(y,m,d){
+  selectedDate = new Date(y,m,d);
+  render(); updateProgress();
+}
+
+function renderDayDetail(){
+  const el = document.getElementById('dayDetail');
+  const dIdx = selectedDate.getDay();
+  const dayLabel = `${DAY_NAMES[dIdx]} ${selectedDate.getDate()} ${MONTH_NAMES[selectedDate.getMonth()]}`;
+  const isToday = selectedDate.getTime()===today.getTime();
+  let tasks = getTasksForDate(selectedDate);
+  let overdue = isToday ? getOverdueTasks(today) : [];
+  if(!tasks.length && !overdue.length){
+    el.innerHTML = `<div class="day-hdr"><span class="day-hdr-date">${dayLabel}</span></div>` + emptyHTML();
+    return;
+  }
+  let html = `<div class="day-hdr"><span class="day-hdr-date">📅 ${dayLabel}</span></div>`;
+  if(overdue.length){
+    html += `<div style="font-size:13px;font-weight:800;color:var(--red);margin-bottom:8px;">🔴 مهام متأخرة</div>`;
+    overdue.forEach(t=>{ html += taskCardHTML(t, true); });
+  }
+  const byPlant = {};
+  state.plants.forEach(p=>{ byPlant[p.id]=[]; });
+  tasks.forEach(t=>{ if(byPlant[t.plantId]) byPlant[t.plantId].push(t); });
+  state.plants.forEach(plant=>{
+    const pts = byPlant[plant.id];
+    if(!pts.length) return;
+    const h = getHealth(plant.id);
+    html += `<div class="plant-grp">
+      <div class="plant-hdr">
+        <span class="plant-emo">${plant.emoji||'🌿'}</span>
+        <span class="plant-nm">${plant.name}</span>
+        <span class="plant-loc ${plant.location==='in'?'loc-in':'loc-out'}">${plant.location==='in'?'🏠 داخل':'🌳 خارج'}</span>
+        <div class="health-dot h-${h.status}" title="${HEALTH_LABEL[h.status]}"></div>
+      </div>`;
+    pts.forEach(t=>{ html += taskCardHTML(t, false); });
+    html += `</div>`;
+  });
+  el.innerHTML = html;
+}
+
+function taskCardHTML(task, isOverdue){
+  const done = isDone(task.id, selectedDate);
+  const prio = taskPriority(task);
+  const tCls = TAG_CLS[task.tag]||'tg-s';
+  const tLbl = TAG_LABELS[task.tag]||task.tag;
+  const window = getTaskWindow(task);
+  let windowHint = '';
+  if(window > 0 && !done && !isOverdue){
+    const due = getCycleDue(task, selectedDate);
+    if(due){
+      const d = new Date(selectedDate); d.setHours(0,0,0,0);
+      const daysSinceDue = Math.round((d - due) / 864e5);
+      const remaining = window - daysSinceDue;
+      if(remaining > 0){
+        windowHint = `<div style="font-size:11px;color:var(--text3);margin-top:3px;">⏳ متبقي ${remaining} يوم</div>`;
+      } else if(remaining === 0){
+        windowHint = `<div style="font-size:11px;color:var(--amber);margin-top:3px;">⚠️ آخر يوم!</div>`;
+      }
+    }
+  }
+  return `<div class="task-card ${done?'done':''} ${isOverdue?'urgent-card':''} prio-${prio}">
+    <div class="tc-top">
+      <div class="tc-info">
+        <div class="tc-name"><span class="prio-pill ${PRIO_CLS[prio]}">${PRIO_LABEL[prio]}</span>${task.name}${isOverdue?' 🔴':''}</div>
+        <div class="tc-desc">${task.desc}</div>
+        ${windowHint}
+      </div>
+      <span class="tc-tag ${tCls}">${tLbl}</span>
+    </div>
+    <div class="tc-bottom">
+      ${done
+        ? `<button class="btn-done is-done" disabled>✅ تم التنفيذ</button>`
+        : `<button class="btn-done" onclick="markDone('${task.id}')">تم التنفيذ ✓</button>`
+      }
+      <button class="btn-photo" onclick="triggerPhoto('${task.plantId}')" title="إضافة صورة">📷</button>
+    </div>
+  </div>`;
+}
+
+async function renderPlantsPage(){
+  const el = document.getElementById('plants-list');
+  if(!state.plants.length){ el.innerHTML=emptyHTML(); return; }
+  let html = `<div style="padding:4px 0 14px;font-size:20px;font-weight:900;color:var(--text);">🌿 نباتاتي</div>`;
+  for(const plant of state.plants){
+    const h      = getHealth(plant.id);
+    const photos = await idbGetPhotos(plant.id);
+    const fillCls= h.status==='good'?'health-fill-g':h.status==='warn'?'health-fill-y':'health-fill-r';
+    const srcBadge = plant.source==='ai'
+      ? `<span class="source-badge src-ai">🤖 بواسطة AI</span>`
+      : plant.type==='fruiting'
+        ? `<span class="source-badge src-fruiting">🍇 مثمرة</span>`
+        : `<span class="source-badge src-manual">📋 يدوي</span>`;
+    const pTypeBadge = plant.plantingType === 'ground' 
+      ? `<span class="source-badge" style="background:rgba(34,168,94,0.15);color:var(--g1);border:1px solid rgba(52,212,122,.2)">🌳 في الأرض</span>`
+      : plant.plantingType === 'pot' 
+        ? `<span class="source-badge" style="background:rgba(96,165,250,0.15);color:var(--blue);border:1px solid rgba(96,165,250,.2)">🪴 في أصيص</span>` 
+        : '';
+    html += `<div class="plant-card-full">
+      <div class="pcf-top">
+        <span class="pcf-emoji">${plant.emoji||'🌿'}</span>
+        <div class="pcf-info">
+          <div class="pcf-name">${plant.name}</div>
+          <div class="pcf-meta">${HEALTH_LABEL[h.status]} · ${plant.location==='in'?'داخل المنزل':'خارج المنزل'} · ري كل ${plant.waterDays||3} أيام</div>
+          ${srcBadge} ${pTypeBadge}
+        </div>
+      </div>
+      <div class="health-bar-wrap">
+        <div class="health-label">الصحة ${h.pct}%</div>
+        <div class="health-bar"><div class="${fillCls}" style="width:${h.pct}%"></div></div>
+      </div>
+      <div class="gallery-section">
+        <div class="gallery-ttl">📸 سجل الصور (${photos.length})</div>
+        <div class="gallery-grid">
+          ${photos.slice(-9).map(p=>`<img class="gallery-img" src="${p}" alt="صورة">`).join('')}
+          <button class="gallery-add-btn" onclick="triggerPhoto('${plant.id}')">+</button>
+        </div>
+      </div>
+      <div class="pcf-actions">
+        <button class="pcf-btn" onclick="toggleLocation('${plant.id}')">📍 تبديل الموقع</button>
+        <button class="pcf-btn" onclick="openTasksManager('${plant.id}')" style="background:rgba(59,130,246,0.1);color:var(--blue);">⚙️ إدارة المهام</button>
+        <button class="pcf-btn danger" onclick="confirmDelete('${plant.id}')">🗑️ حذف</button>
+      </div>
+    </div>`;
+  }
+  el.innerHTML = html;
+}
+
+function emptyHTML(){
+  return `<div class="empty"><div class="empty-ico">🎉</div>
+    <div class="empty-ttl">لا مهام لهذا اليوم</div>
+    <div class="empty-sub">اختر يوماً آخر أو أضف زرعة جديدة 🌟</div></div>`;
+}
+
+function updateProgress(){
+  const tasks = getTasksForDate(today);
+  if(!tasks.length){ document.getElementById('weekPct').textContent='—'; document.getElementById('weekBar').style.width='0%'; return; }
+  const pct = Math.round(tasks.filter(t=>isDone(t.id,today)).length/tasks.length*100);
+  document.getElementById('weekPct').textContent = pct+'%';
+  document.getElementById('weekBar').style.width  = pct+'%';
+}
+
+/* ═══════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════ */
+const PAGE_NAV_MAP = {home:'bnav-home',plants:'bnav-plants',backup:'bnav-backup'};
+
+function showPage(page){
+  currentPage = page;
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.getElementById('calSection').style.display = page==='home'?'':'none';
+  if(page==='home'){
+    document.getElementById('panel-home').classList.add('on');
+  } else {
+    document.getElementById('panel-'+page).classList.add('on');
+  }
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById(PAGE_NAV_MAP[page])?.classList.add('on');
+  render();
+}
+
+/* ═══════════════════════════════════════════
+   ADD PLANT MODAL STATE
+═══════════════════════════════════════════ */
+let formData = {type:null,care:null,light:null,water:null,location:'in', fruitingFlags:{pruning:null,climber:null,calcium:null}, plantingType:null};
+let addMode  = null; // 'manual' | 'ai'
+let advOpen  = false;
+
+function openModal(){
+  formData = {type:null,care:null,light:null,water:null,location:'in', fruitingFlags:{pruning:null,climber:null,calcium:null}, plantingType:null};
+  addMode  = null;
+  advOpen  = false;
+  document.getElementById('plantName').value = '';
+  const b1 = document.getElementById('btnStep1Next'); if(b1) b1.disabled = true;
+  const b2 = document.getElementById('btnStep2Next'); if(b2) b2.disabled = true;
+  document.getElementById('aiJsonPaste').value = '';
+  document.getElementById('jsonStatus').textContent = '';
+  document.getElementById('btnAiImport').disabled = true;
+  document.getElementById('advBody').classList.remove('open');
+  document.getElementById('advArrow').textContent = '▼';
+  document.getElementById('fruitingQs').style.display = 'none';
+  document.getElementById('advWater').value = 3;
+  document.getElementById('advFert').value  = 30;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('sel','sel-ai'));
+  document.getElementById('togIn').classList.add('sel');
+  document.getElementById('togOut').classList.remove('sel');
+  setStepDots(1,'green');
+  showStep(1);
+  document.getElementById('addModal').classList.add('open');
+  document.getElementById('plantName').focus();
+}
+function closeModal(){ document.getElementById('addModal').classList.remove('open'); }
+
+function setStepDots(active, color){
+  [1,2,3,4].forEach(i=>{
+    const el = document.getElementById('sd'+i);
+    if(el){
+      el.classList.toggle('on', i<=active);
+      el.classList.toggle('ai-mode', color==='ai');
+    }
+  });
+}
+
+function showStep(n){
+  ['mstep1','mstep2','mstep3','mstep4a','mstep4b'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.style.display = 'none';
+  });
+  const map = {1:'mstep1', 2:'mstep2', 3:'mstep3', '4a':'mstep4a', '4b':'mstep4b'};
+  const target = map[n] || map[1];
+  const tEl = document.getElementById(target);
+  if(tEl) tEl.style.display = 'block';
+}
+
+function goStep(n){
+  if(n===1){ showStep(1); setStepDots(1,'green'); return; }
+  if(n===2){ showStep(2); setStepDots(2,'green'); return; }
+  if(n===3){ showStep(3); setStepDots(3,'green'); return; }
+}
+
+function onNameInput(){
+  document.getElementById('btnStep1Next').disabled = !document.getElementById('plantName').value.trim();
+}
+
+/* ── Choice ── */
+function chooseManual(){
+  addMode='manual';
+  setStepDots(4,'green');
+  document.getElementById('modalTitle').textContent='📋 خصائص الزرعة';
+  document.getElementById('modalSub').textContent='اختر من القوائم — لا كتابة مطلوبة';
+  showStep('4a');
+}
+function chooseAI(){
+  addMode='ai';
+  setStepDots(4,'ai');
+  document.getElementById('modalTitle').textContent='🤖 توليد بواسطة AI';
+  document.getElementById('modalSub').textContent='انسخ البروميت، الصق الرد';
+  const name = document.getElementById('plantName').value.trim();
+  buildAIPrompt(name, formData.plantingType);
+  showStep('4b');
+}
+
+function buildAIPrompt(name, pType){
+  const plantingAr = pType==='ground' ? 'في الأرض' : 'في أصيص';
+  
+  // Calculate existing schedules to encourage batching
+  const waterFreqs = state.plants.map(p => p.waterDays).filter(Boolean);
+  const fertFreqs = state.plants.map(p => p.fertDays).filter(Boolean);
+  const getMostCommon = (arr) => {
+    if(!arr.length) return null;
+    const counts = {};
+    arr.forEach(n => counts[n] = (counts[n]||0)+1);
+    return Object.keys(counts).reduce((a,b) => counts[a] > counts[b] ? a : b);
+  };
+  const commonWater = getMostCommon(waterFreqs);
+  const commonFert = getMostCommon(fertFreqs);
+  
+  let batchHint = "";
+  if(commonWater || commonFert){
+    batchHint = `\nCRITICAL CONTEXT: The user prefers batching garden tasks. If it is healthy for the plant, please align with these existing intervals:\n`;
+    if(commonWater) batchHint += `- Common watering interval: every ${commonWater} days.\n`;
+    if(commonFert) batchHint += `- Common fertilizing interval: every ${commonFert} days.\n`;
+    batchHint += `Use these exact intervals (or multiples) for 'waterDays', 'fertDays', and custom 'tasks' if they suit the plant.`;
+  }
+
+  const prompt =
+`I am adding "${name}" to my gardening app, planted in ${plantingAr}.${batchHint}
+Provide care data in STRICT JSON format:
+{
+  "waterDays": <integer>,
+  "fertDays": <integer>,
+  "type": <"aromatic"|"leafy"|"drought"|"flowering"|"indoor"|"fruiting">,
+  "light": <"full"|"partial"|"shade">,
+  "emoji": <single emoji>,
+  "isFruiting": <boolean>,
+  "tasks": [
+    {
+      "name": <string>,
+      "desc": <string>,
+      "repeat": <integer>,
+      "period": <"week"|"month">
+    }
+  ]
+}
+Adjust the waterDays and tasks specifically for ${plantingAr} in Egyptian climate. Output ONLY JSON.`;
+  document.getElementById('aiPromptBox').value = prompt;
+}
+
+function copyPrompt(){
+  const txt = document.getElementById('aiPromptBox').value;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(()=>{
+      showToast('📋 تم النسخ!','ai');
+    }).catch(()=> fallbackCopy(txt));
+  } else { fallbackCopy(txt); }
+}
+function fallbackCopy(txt){
+  const ta = document.createElement('textarea');
+  ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); showToast('📋 تم النسخ!','ai'); } catch(e){}
+  document.body.removeChild(ta);
+}
+
+/* ── JSON Paste Validation ── */
+let parsedAiData = null;
+function onJsonPaste(){
+  const raw = document.getElementById('aiJsonPaste').value.trim();
+  const statusEl = document.getElementById('jsonStatus');
+  parsedAiData = null;
+  document.getElementById('btnAiImport').disabled = true;
+  if(!raw){ statusEl.textContent=''; return; }
+  try{
+    // Strip markdown fences if AI added them
+    const clean = raw.replace(/^```[a-z]*\n?/,'').replace(/\n?```$/,'').trim();
+    const data = JSON.parse(clean);
+    if(typeof data.waterDays!=='number'||typeof data.fertDays!=='number'){
+      throw new Error('missing required fields');
+    }
+    parsedAiData = data;
+    statusEl.innerHTML = `<span style="color:var(--g1);font-weight:700">✅ JSON صالح — جاهز للاستيراد</span>`;
+    document.getElementById('btnAiImport').disabled = false;
+  } catch(e){
+    statusEl.innerHTML = `<span style="color:var(--red);font-weight:700">❌ JSON غير صالح — تحقق من التنسيق</span>`;
+  }
+}
+
+/* ── Create from AI ── */
+function createPlantFromAI(){
+  if(!parsedAiData) return;
+  const name = document.getElementById('plantName').value.trim();
+  const pType = formData.plantingType || 'pot';
+  const d    = parsedAiData;
+  const plant = {
+    id:uid(), name,
+    emoji: d.emoji || EMOJIS[d.type] || '🌿',
+    type: d.type || 'leafy',
+    light: d.light || 'partial',
+    location: 'out',
+    plantingType: pType,
+    waterDays: d.waterDays || 3,
+    fertDays:  d.fertDays  || 30,
+    isFruiting: !!d.isFruiting,
+    fruitingFlags: d.fruitingFlags || {},
+    source: 'ai',
+    aiMeta: { importedAt: Date.now(), rawFields: {type:d.type, light:d.light} },
+    aiTasks: d.tasks || [],
+    lastHarvest: null,
+    createdAt: Date.now(),
+  };
+  finalizeCreate(plant);
+}
+
+/* ── Manual creation ── */
+function createPlantManual(){
+  const name = document.getElementById('plantName').value.trim();
+  if(!name) return;
+  const waterDays = parseInt(document.getElementById('advWater').value)||WATER_DAYS[formData.water]||3;
+  const fertDays  = parseInt(document.getElementById('advFert').value)||30;
+  const isFruiting = formData.type==='fruiting';
+  const pType = formData.plantingType || 'pot';
+  const plant = {
+    id:uid(), name,
+    emoji: EMOJIS[formData.type]||'🌿',
+    type: formData.type, care: formData.care, light: formData.light,
+    water: formData.water, location: formData.location,
+    plantingType: pType,
+    waterDays, fertDays,
+    isFruiting,
+    fruitingFlags: isFruiting ? {...formData.fruitingFlags} : {},
+    source: 'manual',
+    aiMeta: null, aiTasks: [],
+    lastHarvest: null,
+    createdAt: Date.now(),
+  };
+  finalizeCreate(plant);
+}
+
+function finalizeCreate(plant){
+  const tasks = generateTasks(plant);
+  state.plants.push(plant);
+  state.tasks.push(...tasks);
+  saveState();
+  closeModal();
+  render(); updateProgress();
+  showToast(`🌱 تم إنشاء "${plant.name}" بنجاح!`, plant.source==='ai'?'ai':'');
+}
+
+/* ── Chip selection ── */
+function selChip(el, group, val){
+  const gridMap = {type:'typeGrid',care:'careGrid',light:'lightGrid',water:'waterGrid', plantingType:'plantingTypeGrid'};
+  if(!gridMap[group]) return;
+  document.getElementById(gridMap[group]).querySelectorAll('.chip').forEach(c=>c.classList.remove('sel','sel-ai'));
+  el.classList.add('sel');
+  formData[group]=val;
+  if(group==='water') document.getElementById('advWater').value = WATER_DAYS[val]||3;
+  if(group==='type'){
+    document.getElementById('fruitingQs').style.display = val==='fruiting'?'block':'none';
+  }
+  if(group==='plantingType'){
+    const b2 = document.getElementById('btnStep2Next');
+    if(b2) b2.disabled = false;
+  }
+  checkManualReady();
+}
+
+function selFQ(el, flag, val){
+  el.closest('[id^="fq-"]').querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  formData.fruitingFlags[flag] = val;
+  checkManualReady();
+}
+
+function checkManualReady(){
+  const base = formData.type && formData.care && formData.light && formData.water;
+  let fruitOk = true;
+  if(formData.type==='fruiting'){
+    const f = formData.fruitingFlags;
+    fruitOk = f.pruning!==null && f.climber!==null && f.calcium!==null;
+  }
+  document.getElementById('btnManualCreate').disabled = !(base && fruitOk);
+}
+
+function setLoc(loc){
+  formData.location=loc;
+  document.getElementById('togIn').classList.toggle('sel',loc==='in');
+  document.getElementById('togOut').classList.toggle('sel',loc==='out');
+}
+
+function toggleAdv(){
+  advOpen=!advOpen;
+  document.getElementById('advBody').classList.toggle('open',advOpen);
+  document.getElementById('advArrow').textContent=advOpen?'▲':'▼';
+}
+
+/* ═══════════════════════════════════════════
+   PLANT ACTIONS
+═══════════════════════════════════════════ */
+function toggleLocation(plantId){
+  const p = state.plants.find(x=>x.id===plantId);
+  if(!p) return;
+  p.location = p.location==='in'?'out':'in';
+  state.tasks.filter(t=>t.plantId===plantId&&t.tag==='water').forEach(t=>{
+    t.repeatDays = p.location==='in'?Math.min(t.repeatDays+1,14):Math.max(t.repeatDays-1,1);
+  });
+  saveState(); render();
+  showToast(`📍 ${p.name}: ${p.location==='in'?'داخل المنزل':'خارج المنزل'}`);
+}
+
+let _delTarget = null;
+function confirmDelete(id){
+  _delTarget=id;
+  document.getElementById('confirmModal').classList.add('open');
+  document.getElementById('confirmDelBtn').onclick = ()=>{ deletePlant(_delTarget); closeConfirm(); };
+}
+function closeConfirm(){ document.getElementById('confirmModal').classList.remove('open'); }
+async function deletePlant(id){
+  state.plants = state.plants.filter(p=>p.id!==id);
+  state.tasks  = state.tasks.filter(t=>t.plantId!==id);
+  await idbDeletePhotos(id);
+  saveState(); render();
+  showToast('🗑️ تم الحذف');
+}
+
+/* ═══════════════════════════════════════════
+   PHOTOS (IndexedDB)
+═══════════════════════════════════════════ */
+let photoTarget = null;
+function triggerPhoto(plantId){
+  photoTarget = plantId;
+  document.getElementById('photoInput').click();
+}
+function handlePhotoUpload(e){
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = async ev => {
+    const photos = await idbGetPhotos(photoTarget);
+    photos.push(ev.target.result);
+    await idbSetPhotos(photoTarget, photos);
+    render();
+    showToast('📸 تم حفظ الصورة في IndexedDB!');
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+}
+
+/* ═══════════════════════════════════════════
+   BACKUP
+═══════════════════════════════════════════ */
+function exportData(){
+  const json = JSON.stringify(state, null, 2);
+  const blob = new Blob([json], {type:'application/json'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const d    = new Date();
+  a.href=url; a.download=`rawdati-backup-${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}.json`;
+  a.click(); URL.revokeObjectURL(url);
+  showToast('📤 تم التصدير! (الصور في IndexedDB منفصلة)');
+}
+function importData(e){
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try{
+      const data = JSON.parse(ev.target.result);
+      if(data.plants && data.tasks){
+        state=data; saveState(); render(); updateProgress();
+        showToast('📥 تم الاستيراد بنجاح!');
+      } else { showToast('❌ الملف غير صالح'); }
+    } catch(err){ showToast('❌ خطأ في قراءة الملف'); }
+  };
+  reader.readAsText(file);
+  e.target.value='';
+}
+
+/* ═══════════════════════════════════════════
+   TASKS MANAGER
+═══════════════════════════════════════════ */
+let tmCurrentPlantId = null;
+
+function openTasksManager(plantId) {
+  tmCurrentPlantId = plantId;
+  const plant = state.plants.find(p => p.id === plantId);
+  if (!plant) return;
+  document.getElementById('tmTitle').textContent = `⚙️ إدارة المهام: ${plant.name}`;
+  document.getElementById('tasksManagerModal').classList.add('open');
+  resetTmForm();
+  renderTmTasks();
+}
+
+function closeTasksManager() {
+  document.getElementById('tasksManagerModal').classList.remove('open');
+  tmCurrentPlantId = null;
+}
+
+function renderTmTasks() {
+  const el = document.getElementById('tmList');
+  if (!tmCurrentPlantId) return;
+  const tasks = state.tasks.filter(t => t.plantId === tmCurrentPlantId);
+  
+  if (tasks.length === 0) {
+    el.innerHTML = `<div style="text-align:center;color:var(--text3);padding:20px;">لا توجد مهام حالياً.</div>`;
+    return;
+  }
+  
+  let html = '';
+  tasks.forEach(t => {
+    const tLbl = TAG_LABELS[t.tag] || t.tag;
+    const startD = new Date(t.createdAt);
+    const startStr = `${startD.getFullYear()}-${String(startD.getMonth()+1).padStart(2,'0')}-${String(startD.getDate()).padStart(2,'0')}`;
+    html += `<div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg); border:1px solid var(--bg3); padding:10px 15px; margin-bottom:8px; border-radius:8px;">
+      <div>
+        <div style="font-weight:700;font-size:14px;color:var(--text);">${t.name} <span style="font-size:11px;color:var(--text3);font-weight:normal;">(كل ${t.repeatDays} يوم)</span></div>
+        <div style="font-size:12px;color:var(--text3);margin-top:4px;">${tLbl} · ${t.desc}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px;">📅 البداية: ${startStr}</div>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button style="background:none;border:none;color:var(--blue);cursor:pointer;font-size:16px;" onclick="editTmTask('${t.id}')" title="تعديل">✏️</button>
+        <button style="background:none;border:none;color:var(--red);cursor:pointer;font-size:16px;" onclick="deleteTmTask('${t.id}')" title="حذف">🗑️</button>
+      </div>
+    </div>`;
+  });
+  el.innerHTML = html;
+}
+
+function resetTmForm() {
+  document.getElementById('tmTaskId').value = '';
+  document.getElementById('tmName').value = '';
+  document.getElementById('tmDesc').value = '';
+  document.getElementById('tmTag').value = 'check';
+  document.getElementById('tmRepeat').value = '7';
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  document.getElementById('tmStartDate').value = todayStr;
+  document.getElementById('tmFormTitle').textContent = '✨ إضافة مهمة جديدة';
+  document.getElementById('tmSaveBtn').textContent = '💾 حفظ المهمة';
+  document.getElementById('tmCancelBtn').style.display = 'none';
+}
+
+function editTmTask(taskId) {
+  const task = state.tasks.find(t => t.id === taskId);
+  if (!task) return;
+  document.getElementById('tmTaskId').value = task.id;
+  document.getElementById('tmName').value = task.name;
+  document.getElementById('tmDesc').value = task.desc;
+  document.getElementById('tmTag').value = task.tag || 'check';
+  document.getElementById('tmRepeat').value = task.repeatDays || 7;
+  const sd = new Date(task.createdAt);
+  document.getElementById('tmStartDate').value = `${sd.getFullYear()}-${String(sd.getMonth()+1).padStart(2,'0')}-${String(sd.getDate()).padStart(2,'0')}`;
+  
+  document.getElementById('tmFormTitle').textContent = '✏️ تعديل المهمة';
+  document.getElementById('tmSaveBtn').textContent = '💾 حفظ التعديلات';
+  document.getElementById('tmCancelBtn').style.display = 'block';
+}
+
+function deleteTmTask(taskId) {
+  if (confirm('هل أنت متأكد من حذف هذه المهمة؟')) {
+    state.tasks = state.tasks.filter(t => t.id !== taskId);
+    // Remove completion records logic could be added, but not strictly necessary.
+    saveState();
+    renderTmTasks();
+    render();
+    updateProgress();
+    showToast('🗑️ تم حذف المهمة');
+  }
+}
+
+function saveTmTask() {
+  if (!tmCurrentPlantId) return;
+  const taskId = document.getElementById('tmTaskId').value;
+  const name = document.getElementById('tmName').value.trim();
+  const desc = document.getElementById('tmDesc').value.trim();
+  const tag = document.getElementById('tmTag').value;
+  const repeatDays = parseInt(document.getElementById('tmRepeat').value) || 7;
+  
+  if (!name) {
+    showToast('❌ الرجاء إدخال اسم المهمة');
+    return;
+  }
+  
+  const startDateVal = document.getElementById('tmStartDate').value;
+  const startTs = startDateVal ? new Date(startDateVal).getTime() : Date.now();
+  
+  if (taskId) {
+    // Edit existing
+    const taskIndex = state.tasks.findIndex(t => t.id === taskId);
+    if (taskIndex !== -1) {
+      state.tasks[taskIndex].name = name;
+      state.tasks[taskIndex].desc = desc;
+      state.tasks[taskIndex].tag = tag;
+      state.tasks[taskIndex].repeatDays = repeatDays;
+      state.tasks[taskIndex].createdAt = startTs;
+      // Re-evaluate period just for consistency
+      state.tasks[taskIndex].period = repeatDays > 50 ? 'season' : (repeatDays > 7 ? 'month' : 'week');
+    }
+  } else {
+    // Add new
+    const newTask = {
+      id: uid(),
+      plantId: tmCurrentPlantId,
+      name,
+      desc,
+      tag,
+      repeatDays,
+      period: repeatDays > 50 ? 'season' : (repeatDays > 7 ? 'month' : 'week'),
+      createdAt: startTs
+    };
+    state.tasks.push(newTask);
+  }
+  
+  saveState();
+  renderTmTasks();
+  resetTmForm();
+  render();
+  updateProgress();
+  showToast(taskId ? '✅ تم تحديث المهمة' : '✨ تمت إضافة المهمة');
+}
+
+/* ═══════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════ */
+let _toastTimer = null;
+function showToast(msg, type=''){
+  const el = document.getElementById('toast');
+  el.textContent=msg;
+  el.className = 'toast show' + (type==='ai'?' ai-toast':'');
+  if(_toastTimer) clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(()=>el.classList.remove('show'),2600);
+}
+
+/* ═══════════════════════════════════════════
+   DATE BADGE
+═══════════════════════════════════════════ */
+function setDate(){
+  const d=new Date();
+  document.getElementById('dateBadge').textContent=`${DAY_NAMES[d.getDay()]} ${d.getDate()} ${MONTH_NAMES[d.getMonth()]}`;
+}
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+(async ()=>{
+  await openIDB();
+  loadState();
+  setDate();
+  updateProgress();
+  render();
+})();
+
+if('serviceWorker' in navigator){
+  const swCode = `self.addEventListener('install', e => e.waitUntil(self.skipWaiting())); self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));`;
+  const blob = new Blob([swCode], {type: 'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+}
+</script>
+</body>
+</html>
