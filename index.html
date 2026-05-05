@@ -271,6 +271,16 @@ input[type=file]{display:none;}
 .btn-exp{background:linear-gradient(135deg,var(--g3),var(--g2));color:#fff;box-shadow:var(--sh-g);}
 .btn-imp{background:var(--card2);border:1.5px solid var(--border2);color:var(--teal);}
 .btn-backup:active{transform:scale(.97);}
+.tools-tabs{display:flex;gap:4px;margin-bottom:16px;background:var(--bg);border-radius:var(--r-sm);padding:4px;}
+.tools-tab{flex:1;padding:10px 6px;border:none;border-radius:var(--r-xs);background:transparent;color:var(--text3);font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;}
+.tools-tab.active{background:var(--card2);color:var(--g1);box-shadow:0 2px 8px rgba(0,0,0,.3);}
+.tools-panel{display:none;}
+.tools-panel.active{display:block;}
+.doc-prompt-box{width:100%;min-height:120px;padding:12px;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:'Tajawal',sans-serif;font-size:13px;line-height:1.6;resize:vertical;}
+.doc-prompt-box:focus{outline:none;border-color:var(--g2);}
+.doc-input{width:100%;padding:10px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:'Tajawal',sans-serif;font-size:14px;margin-bottom:10px;}
+.doc-input:focus{outline:none;border-color:var(--g2);}
+.doc-select{width:100%;padding:10px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:'Tajawal',sans-serif;font-size:14px;margin-bottom:10px;appearance:auto;}
 
 /* ─── BOTTOM NAV ─── */
 .bnav{
@@ -566,7 +576,7 @@ input[type=file]{display:none;}
       </div>
     </div>
     <div class="hdr-actions">
-      <div class="btn-icon-sm" onclick="showPage('backup')" title="نسخ احتياطي">💾</div>
+      <div class="btn-icon-sm" onclick="showPage('backup')" title="أدوات">🛠️</div>
       <button class="btn-add-plant" onclick="openModal()">➕ إضافة زرعة</button>
     </div>
   </div>
@@ -613,16 +623,57 @@ input[type=file]{display:none;}
   <div class="panel" id="panel-plants"><div id="plants-list"></div></div>
   <div class="panel" id="panel-backup">
     <div class="backup-section">
-      <div class="backup-card">
-        <div class="backup-title">📤 تصدير البيانات</div>
-        <div class="backup-desc">احفظ كل نباتاتك ومهامك في ملف JSON على جهازك. الصور محفوظة منفصلاً في IndexedDB.</div>
-        <button class="btn-backup btn-exp" onclick="exportData()">📤 تصدير الآن</button>
+      <!-- Tools Tabs -->
+      <div class="tools-tabs">
+        <button class="tools-tab active" onclick="switchToolsTab('doctor')">🩺 طبيب النبات</button>
+        <button class="tools-tab" onclick="switchToolsTab('quickprompt')">🤖 بروميت سريع</button>
+        <button class="tools-tab" onclick="switchToolsTab('backup')">💾 نسخ احتياطي</button>
       </div>
-      <div class="backup-card">
-        <div class="backup-title">📥 استيراد البيانات</div>
-        <div class="backup-desc">استعد بياناتك من ملف JSON. سيتم استبدال البيانات الحالية.</div>
-        <button class="btn-backup btn-imp" onclick="document.getElementById('importFile').click()">📥 اختر ملف الاستيراد</button>
-        <input type="file" id="importFile" accept=".json" onchange="importData(event)">
+
+      <!-- TAB 1: Plant Doctor -->
+      <div class="tools-panel active" id="toolsTab-doctor">
+        <div class="backup-card">
+          <div class="backup-title">🩺 استشارة طبيب النبات</div>
+          <div class="backup-desc">وصّف المشكلة اللي شايفها في النبات. التطبيق هيجهزلك بروميت احترافي تبعته لـ ChatGPT أو Gemini مع صورة لو حابب.</div>
+          <select id="docPlantSelect" class="doc-select" onchange="updateDoctorPrompt()">
+            <option value="">— اختر النبات —</option>
+          </select>
+          <textarea id="docProblem" class="doc-input" placeholder="اوصف المشكلة (مثال: الأوراق بقت صفراء من الأطراف...)" rows="3" oninput="updateDoctorPrompt()"></textarea>
+          <div class="backup-title" style="font-size:13px;margin-top:14px;margin-bottom:6px;">📋 البروميت الجاهز — انسخه وابعته مع صورة:</div>
+          <textarea id="docPromptOutput" class="doc-prompt-box" readonly rows="8"></textarea>
+          <button class="btn-backup btn-exp" onclick="copyDoctorPrompt()" style="margin-top:10px;">📋 نسخ البروميت</button>
+        </div>
+      </div>
+
+      <!-- TAB 2: Quick Plant Prompt -->
+      <div class="tools-panel" id="toolsTab-quickprompt">
+        <div class="backup-card">
+          <div class="backup-title">🤖 بروميت إضافة زرعة سريع</div>
+          <div class="backup-desc">اكتب اسم الزرعة واختر نوع الزراعة، وهنجهزلك البروميت الاحترافي اللي تبعته للـ AI عشان يرجعلك JSON جاهز للاستيراد.</div>
+          <input type="text" id="qpName" class="doc-input" placeholder="اسم الزرعة (مثال: ياسمين، نعناع...)">
+          <select id="qpType" class="doc-select">
+            <option value="pot">🪴 في أصيص</option>
+            <option value="ground">🌳 في الأرض</option>
+          </select>
+          <button class="btn-backup btn-exp" onclick="generateQuickPrompt()" style="margin-bottom:10px;">⚡ توليد البروميت</button>
+          <textarea id="qpOutput" class="doc-prompt-box" readonly rows="8" placeholder="البروميت هيظهر هنا..."></textarea>
+          <button class="btn-backup btn-imp" onclick="copyQuickPrompt()" style="margin-top:10px;">📋 نسخ البروميت</button>
+        </div>
+      </div>
+
+      <!-- TAB 3: Backup -->
+      <div class="tools-panel" id="toolsTab-backup">
+        <div class="backup-card">
+          <div class="backup-title">📤 تصدير البيانات</div>
+          <div class="backup-desc">احفظ كل نباتاتك ومهامك في ملف JSON على جهازك. الصور محفوظة منفصلاً في IndexedDB.</div>
+          <button class="btn-backup btn-exp" onclick="exportData()">📤 تصدير الآن</button>
+        </div>
+        <div class="backup-card">
+          <div class="backup-title">📥 استيراد البيانات</div>
+          <div class="backup-desc">استعد بياناتك من ملف JSON. سيتم استبدال البيانات الحالية.</div>
+          <button class="btn-backup btn-imp" onclick="document.getElementById('importFile').click()">📥 اختر ملف الاستيراد</button>
+          <input type="file" id="importFile" accept=".json" onchange="importData(event)">
+        </div>
       </div>
     </div>
   </div>
@@ -632,7 +683,7 @@ input[type=file]{display:none;}
 <div class="bnav">
   <button class="bnav-btn on" id="bnav-home" onclick="showPage('home')"><span class="bi">🏠</span><span class="bl">الرئيسية</span></button>
   <button class="bnav-btn" id="bnav-plants" onclick="showPage('plants')"><span class="bi">🌿</span><span class="bl">نباتاتي</span></button>
-  <button class="bnav-btn" id="bnav-backup" onclick="showPage('backup')"><span class="bi">💾</span><span class="bl">نسخ احتياطي</span></button>
+  <button class="bnav-btn" id="bnav-backup" onclick="showPage('backup')"><span class="bi">🛠️</span><span class="bl">أدوات</span></button>
 </div>
 
 <!-- TOAST -->
@@ -1424,6 +1475,7 @@ function showPage(page){
   }
   document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('on'));
   document.getElementById(PAGE_NAV_MAP[page])?.classList.add('on');
+  if(page === 'backup') populateDocPlantSelect();
   render();
 }
 
@@ -1927,6 +1979,138 @@ function saveTmTask() {
    TOAST
 ═══════════════════════════════════════════ */
 let _toastTimer = null;
+/* ═══════════════════════════════════════════
+   TOOLS PAGE
+═══════════════════════════════════════════ */
+function switchToolsTab(tabName){
+  document.querySelectorAll('.tools-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tools-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('toolsTab-'+tabName).classList.add('active');
+  // Highlight the correct tab button
+  const tabs = document.querySelectorAll('.tools-tab');
+  const map = {doctor:0, quickprompt:1, backup:2};
+  if(tabs[map[tabName]]) tabs[map[tabName]].classList.add('active');
+  
+  if(tabName === 'doctor') populateDocPlantSelect();
+}
+
+function populateDocPlantSelect(){
+  const sel = document.getElementById('docPlantSelect');
+  let html = '<option value="">— اختر النبات —</option>';
+  state.plants.forEach(p => {
+    html += `<option value="${p.id}">${p.emoji||'🌿'} ${p.name}</option>`;
+  });
+  sel.innerHTML = html;
+  updateDoctorPrompt();
+}
+
+function updateDoctorPrompt(){
+  const plantId = document.getElementById('docPlantSelect').value;
+  const problem = document.getElementById('docProblem').value.trim();
+  const out = document.getElementById('docPromptOutput');
+  
+  if(!plantId && !problem){
+    out.value = 'اختر نبات أو اوصف المشكلة وهيظهرلك البروميت هنا...';
+    return;
+  }
+  
+  let context = '';
+  if(plantId){
+    const plant = state.plants.find(p => p.id === plantId);
+    if(plant){
+      const tasks = state.tasks.filter(t => t.plantId === plantId);
+      const waterTask = tasks.find(t => t.tag === 'water');
+      const fertTask = tasks.find(t => t.tag === 'fert');
+      context = `\nPlant details:
+- Name: ${plant.name}
+- Type: ${plant.type || 'unknown'}
+- Planted in: ${plant.plantingType === 'ground' ? 'ground soil' : 'pot'}
+- Location: ${plant.location === 'in' ? 'indoors' : 'outdoors'}
+- Light: ${plant.light || 'unknown'}
+- Watering every: ${plant.waterDays || (waterTask ? waterTask.repeatDays : '?')} days
+- Fertilizing every: ${plant.fertDays || (fertTask ? fertTask.repeatDays : '?')} days
+- Climate: Egyptian (hot, semi-arid)`;
+    }
+  }
+  
+  let problemLine = problem ? `\nUser's description of the problem: "${problem}"` : '';
+  
+  out.value = `You are an expert botanist and plant doctor. A user is having a problem with their plant and needs your help diagnosing it.${context}${problemLine}
+
+The user may attach a photo of the affected leaves/stems. Please:
+1. Diagnose the most likely issue based on the description and photo (if provided).
+2. Explain the cause simply.
+3. Recommend a treatment plan with specific steps.
+4. Suggest any changes to their current care routine.
+
+Please respond in Arabic (Egyptian dialect is fine). Be specific and practical.`;
+}
+
+function copyDoctorPrompt(){
+  const txt = document.getElementById('docPromptOutput').value;
+  if(!txt || txt.includes('اختر نبات')) { showToast('❌ اختر نبات أو اكتب المشكلة الأول'); return; }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(()=> showToast('📋 تم نسخ البروميت!')).catch(()=> fallbackCopy(txt));
+  } else { fallbackCopy(txt); }
+}
+
+function generateQuickPrompt(){
+  const name = document.getElementById('qpName').value.trim();
+  if(!name){ showToast('❌ اكتب اسم الزرعة الأول'); return; }
+  const pType = document.getElementById('qpType').value;
+  const plantingAr = pType==='ground' ? 'في الأرض' : 'في أصيص';
+  
+  const waterFreqs = state.plants.map(p => p.waterDays).filter(Boolean);
+  const fertFreqs = state.plants.map(p => p.fertDays).filter(Boolean);
+  const getMostCommon = (arr) => {
+    if(!arr.length) return null;
+    const counts = {};
+    arr.forEach(n => counts[n] = (counts[n]||0)+1);
+    return Object.keys(counts).reduce((a,b) => counts[a] > counts[b] ? a : b);
+  };
+  const commonWater = getMostCommon(waterFreqs);
+  const commonFert = getMostCommon(fertFreqs);
+  
+  let batchHint = "";
+  if(commonWater || commonFert){
+    batchHint = `\nCRITICAL CONTEXT: The user prefers batching garden tasks. If it is healthy for the plant, please align with these existing intervals:\n`;
+    if(commonWater) batchHint += `- Common watering interval: every ${commonWater} days.\n`;
+    if(commonFert) batchHint += `- Common fertilizing interval: every ${commonFert} days.\n`;
+    batchHint += `Use these exact intervals (or multiples) for 'waterDays', 'fertDays', and custom 'tasks' if they suit the plant.`;
+  }
+
+  const prompt =
+`I am adding "${name}" to my gardening app, planted in ${plantingAr}.${batchHint}
+Provide care data in STRICT JSON format:
+{
+  "waterDays": <integer>,
+  "fertDays": <integer>,
+  "type": <"aromatic"|"leafy"|"drought"|"flowering"|"indoor"|"fruiting">,
+  "light": <"full"|"partial"|"shade">,
+  "emoji": <single emoji>,
+  "isFruiting": <boolean>,
+  "tasks": [
+    {
+      "name": <string>,
+      "desc": <string>,
+      "repeat": <integer>,
+      "period": <"week"|"month">
+    }
+  ]
+}
+Adjust the waterDays and tasks specifically for ${plantingAr} in Egyptian climate. Output ONLY JSON.`;
+  document.getElementById('qpOutput').value = prompt;
+  showToast('⚡ تم توليد البروميت!');
+}
+
+function copyQuickPrompt(){
+  const txt = document.getElementById('qpOutput').value;
+  if(!txt){ showToast('❌ ولّد البروميت الأول'); return; }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(()=> showToast('📋 تم نسخ البروميت!')).catch(()=> fallbackCopy(txt));
+  } else { fallbackCopy(txt); }
+}
+
 function showToast(msg, type=''){
   const el = document.getElementById('toast');
   el.textContent=msg;
